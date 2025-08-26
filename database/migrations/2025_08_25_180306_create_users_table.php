@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 255);
+            $table->string('email', 255)->unique();
+            $table->string('password', 255);
+            $table->string('national_id', 50)->unique();
+            $table->string('phone', 20)->nullable();
+            $table->enum('gender', ['ذكر`', 'أنثى'])->nullable();
+            $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
