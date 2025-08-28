@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('national_id', 50)->unique();
             $table->string('phone', 20)->nullable();
-            $table->enum('gender', ['ذكر`', 'أنثى'])->nullable();
+            $table->enum('gender', ['ذكر', 'أنثى'])->nullable();
             $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('set null');
             $table->text('notes')->nullable();
             $table->timestamps();

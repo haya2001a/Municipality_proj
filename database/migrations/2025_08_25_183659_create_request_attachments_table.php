@@ -4,20 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-  Schema::create('request_attachments', function (Blueprint $table) {
+        Schema::create('request_attachments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('request_id')->constrained('service_requests')->onDelete('cascade');
             $table->string('file_name');
-            $table->string('file_type',50);
+            $table->string('file_type', 50);
             $table->integer('file_size')->nullable();
-            $table->enum('attachment_type',['صورة هوية','صورة شخصية','شهادة','عقد','غيرها']);
+            $table->enum('attachment_type', ['صورة هوية', 'صورة شخصية', 'شهادة', 'عقد', 'غيرها']);
             $table->timestamps();
         });
     }
