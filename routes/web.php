@@ -1,6 +1,11 @@
 <?php
 
 use App\Http\Controllers\AdminControllers\AdminController;
+use App\Http\Controllers\AdminControllers\DepartmentsController;
+use App\Http\Controllers\AdminControllers\PermissionsController;
+use App\Http\Controllers\AdminControllers\RolesController;
+use App\Http\Controllers\AdminControllers\ServicesController;
+use App\Http\Controllers\AdminControllers\UserController;
 use App\Http\Controllers\CitizenControllers\CitizenController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeControllers\EmployeeController;
@@ -32,8 +37,15 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin Dashboard
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+    Route::resource('users', UserController::class);
+    Route::get('/permissions', [PermissionsController::class, 'index'])->name('permissions');
+    Route::get('/services', [ServicesController::class, 'index'])->name('services');
+    Route::get('/requests', [AdminController::class, 'index'])->name('requests');
+    Route::get('/roles', [RolesController::class, 'getRoles'])->name('roles');
+    Route::get('/departments', [DepartmentsController::class, 'getDepartments'])->name('departments');
+
 });
 
 // Employee Dashboard
