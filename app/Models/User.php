@@ -28,7 +28,6 @@ class User extends Authenticatable
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email' . ($id ? ",$id" : ''),
-            'password' => $id ? 'nullable|string|min:6' : 'required|string|min:6',
             'national_id' => 'required|string|max:9|unique:users,national_id' . ($id ? ",$id" : ''),
             'phone' => 'nullable|string|max:20',
             'gender' => 'nullable|in:ذكر,أنثى',

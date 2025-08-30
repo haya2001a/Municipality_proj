@@ -56,15 +56,15 @@ class RolesAndPermissionsSeeder extends Seeder
         // Create roles and assign permissions
 
         // مشرف عام
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin', 'name_ar' => 'مشرف']);
         $adminRole->givePermissionTo($adminPermissions);
 
         // موظف
-        $employeeRole = Role::firstOrCreate(['name' => 'employee']);
+        $employeeRole = Role::firstOrCreate(['name' => 'employee', 'name_ar' => 'موظف']);
         $employeeRole->givePermissionTo($employeePermissions);
 
         // مواطن
-        $citizenRole = Role::firstOrCreate(['name' => 'citizen']);
+        $citizenRole = Role::firstOrCreate(['name' => 'citizen', 'name_ar' => 'مواطن']);
         $citizenRole->givePermissionTo($citizenPermissions);
 
         // Create admin user and assign role
