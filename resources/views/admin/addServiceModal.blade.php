@@ -14,7 +14,8 @@
                         <!-- اسم الخدمة -->
                         <div class="col-md-6">
                             <label class="form-label">اسم الخدمة</label>
-                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" required>
+                            <input type="text" name="name"
+                                class="form-control @error('name') is-invalid @enderror" required>
                             @error('name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -23,9 +24,10 @@
                         <!-- القسم -->
                         <div class="col-md-6">
                             <label class="form-label">القسم</label>
-                            <select name="department_id" class="form-select @error('department_id') is-invalid @enderror" required>
+                            <select name="department_id"
+                                class="form-select @error('department_id') is-invalid @enderror" required>
                                 <option value="" disabled selected hidden>اختر القسم</option>
-                                @foreach($departments as $department)
+                                @foreach ($departments as $department)
                                     <option value="{{ $department->id }}">{{ $department->name }}</option>
                                 @endforeach
                             </select>
@@ -37,7 +39,8 @@
                         <!-- السعر -->
                         <div class="col-md-6">
                             <label class="form-label">السعر</label>
-                            <input type="number" step="0.01" name="price" class="form-control @error('price') is-invalid @enderror" required>
+                            <input type="number" step="0.01" name="price"
+                                class="form-control @error('price') is-invalid @enderror" required>
                             @error('price')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -46,7 +49,8 @@
                         <!-- المدة الدنيا -->
                         <div class="col-md-6">
                             <label class="form-label">المدة الدنيا (بالأيام)</label>
-                            <input type="number" name="processing_time_min" class="form-control @error('processing_time_min') is-invalid @enderror" required>
+                            <input type="number" name="processing_time_min"
+                                class="form-control @error('processing_time_min') is-invalid @enderror" required>
                             @error('processing_time_min')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -55,7 +59,8 @@
                         <!-- المدة القصوى -->
                         <div class="col-md-6">
                             <label class="form-label">المدة القصوى (بالأيام)</label>
-                            <input type="number" name="processing_time_max" class="form-control @error('processing_time_max') is-invalid @enderror" required>
+                            <input type="number" name="processing_time_max"
+                                class="form-control @error('processing_time_max') is-invalid @enderror" required>
                             @error('processing_time_max')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -74,6 +79,20 @@
                             @enderror
                         </div>
 
+                        <div>
+                            <div class="form-group mb-3" class="col-md-6">
+                                <label for="priority">الأولوية</label>
+                                <select name="priority" id="priority" class="form-select" required>
+                                    <option value="" selected hidden>اختر الأولوية</option>
+                                    <option value="غير عاجل">غير عاجل</option>
+                                    <option value="متوسط">متوسط</option>
+                                    <option value="عاجل">عاجل</option>
+                                </select>
+                                @error('priority')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
                         <!-- الوصف -->
                         <div class="col-12">
                             <label class="form-label">الوصف</label>

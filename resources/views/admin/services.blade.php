@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="d-flex align-items-center gap-3 flex-wrap">
-                        <form method="GET" action="{{ route('admin.services') }}" id="statusFilterForm"
+                        <form method="GET" action="{{ route('admin.services.index') }}" id="statusFilterForm"
                             class="d-flex align-items-center gap-2 mb-0">
                             <label for="statusFilter" class="mb-0 fw-semibold">الحالة:</label>
                             <select name="status" id="statusFilter" class="form-select w-auto form-select-sm">
@@ -34,28 +34,42 @@
                                     فعّالة</option>
                             </select>
                         </form>
-                      
-                        <form method="GET" action="{{ route('admin.services') }}" id="departmentFilterForm"
+
+                        <form method="GET" action="{{ route('admin.services.index') }}" id="departmentFilterForm"
                             class="d-flex align-items-center gap-2 mb-0">
                             <label for="departmentFilter" class="mb-0 fw-semibold">القسم:</label>
                             <select name="department" id="departmentFilter" class="form-select w-auto form-select-sm">
                                 <option value="">الكل</option>
-                                @foreach($departments as $department)
-                                    <option value="{{ $department->id }}" {{ request('department') == $department->id ? 'selected' : '' }}>
+                                @foreach ($departments as $department)
+                                    <option value="{{ $department->id }}"
+                                        {{ request('department') == $department->id ? 'selected' : '' }}>
                                         {{ $department->name }}
                                     </option>
                                 @endforeach
                             </select>
                         </form>
-                      
-                      
-                        <form method="GET" action="{{ route('admin.services') }}" id="nameFilterForm"
+
+                        <form method="GET" action="{{ route('admin.services.index') }}" id="priorityFilterForm"
+                            class="d-flex align-items-center gap-2 mb-0">
+                            <label for="priorityFilter" class="mb-0 fw-semibold">الأولوية:</label>
+                            <select name="priority" id="priorityFilter" class="form-select w-auto form-select-sm">
+                                <option value="">الكل</option>
+                                @foreach (['غير عاجل', 'متوسط', 'عاجل'] as $priority)
+                                    <option value="{{ $priority }}"
+                                        {{ request('priority') == $priority ? 'selected' : '' }}>
+                                        {{ $priority }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </form>
+
+                        <form method="GET" action="{{ route('admin.services.index') }}" id="nameFilterForm"
                             class="d-flex align-items-center gap-2 mb-0">
                             <label for="nameFilter" class="mb-0 fw-semibold">الخدمة:</label>
                             <input type="text" name="name" id="nameFilter" class="form-control form-control-sm"
                                 placeholder="ابحث باسم الخدمة" value="{{ request('name') }}">
                         </form>
-                      
+
 
                     </div>
                 </caption>
@@ -67,6 +81,7 @@
                         <th>السعر</th>
                         <th>المدة (دقيقة)</th>
                         <th>الحالة</th>
+                        <th>الأولوية</th>
                         <th class="text-center">العمليات</th>
                     </tr>
                 </thead>
@@ -77,13 +92,14 @@
                             <td>{{ $service->department->name ?? '-' }}</td>
                             <td>{{ number_format($service->price, 2) }}</td>
                             <td>
-                                @if($service->processing_time_min && $service->processing_time_max)
+                                @if ($service->processing_time_min && $service->processing_time_max)
                                     {{ $service->processing_time_min }} - {{ $service->processing_time_max }}
                                 @else
                                     -
                                 @endif
                             </td>
                             <td>{{ $service->status }}</td>
+                            <td>{{ $service->priority }}</td>
                             <td class="text-center">
                                 <button class="table-link editServiceBtn" data-id="{{ $service->id }}" title="تعديل">
                                     <span class="fa-stack">
@@ -114,17 +130,19 @@
     @include('admin.addServiceModal');
 
     <script>
-        $(function () {
+        $(function() {
             // open edit modal
-            $('.editServiceBtn').on('click', function () {
+            $('.editServiceBtn').on('click', function() {
                 var serviceId = $(this).data('id');
 
-                $.get('/admin/services/' + serviceId + '/edit', function (data) {
+                $.get('/admin/services/' + serviceId + '/edit', function(data) {
                     $('#editServiceForm').attr('action', '/admin/services/' + serviceId);
                     $('#editServiceForm [name="name"]').val(data.name);
                     $('#editServiceForm [name="price"]').val(data.price);
-                    $('#editServiceForm [name="processing_time_min"]').val(data.processing_time_min);
-                    $('#editServiceForm [name="processing_time_max"]').val(data.processing_time_max);
+                    $('#editServiceForm [name="processing_time_min"]').val(data
+                    .processing_time_min);
+                    $('#editServiceForm [name="processing_time_max"]').val(data
+                    .processing_time_max);
                     $('#editServiceForm [name="status"]').val(data.status);
                     $('#editServiceForm [name="department_id"]').val(data.department_id);
 
@@ -133,13 +151,13 @@
             });
 
             // reset the form when the modal is closed
-            $('#editServiceModal, #addServiceModal').on('hidden.bs.modal', function () {
+            $('#editServiceModal, #addServiceModal').on('hidden.bs.modal', function() {
                 resetForm('editServiceForm');
                 resetForm('addServiceForm');
             });
 
             // delete modal
-            $('#deleteModal').on('show.bs.modal', function (event) {
+            $('#deleteModal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var action = button.data('action');
                 var message = button.data('message');
@@ -149,13 +167,16 @@
             });
         });
 
-        $('#statusFilter').on('change', function () {
+        $('#statusFilter').on('change', function() {
             $('#statusFilterForm').submit();
         });
 
         $('#departmentFilter').on('change', function() {
-    $('#departmentFilterForm').submit();
-});
+            $('#departmentFilterForm').submit();
+        });
 
+        $('#priorityFilter').on('change', function() {
+            $('#priorityFilterForm').submit();
+        });
     </script>
 </x-app-layout>

@@ -17,7 +17,8 @@ class ServicesController extends Controller
     {
         $departmentFilter = $request->input('department');
         $nameFilter = $request->input('name');
-    $statusFilter = $request->input('status'); // إضافة فلتر الحالة
+        $statusFilter = $request->input('status');
+        $priorityFilter = $request->input('priority');
 
         $services = Service::query();
 
@@ -28,10 +29,15 @@ class ServicesController extends Controller
         if ($nameFilter) {
             $services->where('name', 'like', "%{$nameFilter}%");
         }
-    if ($statusFilter) { // فلترة حسب الحالة
-        $services->where('status', $statusFilter);
-    }
-    $services = $services->latest()->paginate(10);// للحفاظ على الفلاتر في pagination
+        if ($statusFilter) { // فلترة حسب الحالة
+            $services->where('status', $statusFilter);
+        }
+
+        if ($priorityFilter) {
+            $services->where('priority', $priorityFilter);
+        }
+
+        $services = $services->latest()->paginate(10);// للحفاظ على الفلاتر في pagination
 
         $departments = Department::all();
 
@@ -52,15 +58,7 @@ class ServicesController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'department_id' => 'required|exists:departments,id',
-            'price' => 'nullable|numeric|min:0',
-            'processing_time_min' => 'nullable|integer|min:0',
-            'processing_time_max' => 'nullable|integer|min:0',
-            'status' => 'required|in:فعّالة,غير فعّالة',
-            'description' => 'nullable|string',
-        ]);
+        $validator = Validator::make($request->all(), Service::rules());
 
         if ($validator->fails()) {
             return redirect()->back()
@@ -96,15 +94,8 @@ class ServicesController extends Controller
     {
         $service = Service::findOrFail($id);
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'department_id' => 'required|exists:departments,id',
-            'price' => 'nullable|numeric|min:0',
-            'processing_time_min' => 'nullable|integer|min:0',
-            'processing_time_max' => 'nullable|integer|min:0',
-            'status' => 'required|in:فعّالة,غير فعّالة',
-            'description' => 'nullable|string',
-        ]);
+        $validator = Validator::make($request->all(), Service::rules());
+
 
         if ($validator->fails()) {
             return redirect()->back()

@@ -55,7 +55,7 @@
                                         إدارة المستخدمين
                                     </a>
                                   
-                                    <a href="{{ route('admin.services') }}"
+                                    <a href="{{ route('admin.services.index') }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                         إدارة مجموعات الخدمات
                                     </a>
@@ -75,13 +75,13 @@
                                     </a>
                                 @else
                                     <!-- Citizen Sections -->
-                                    <a href="{{ route('citizen.requests') }}"
+                                    <a href="{{ route('citizen.requests.index') }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        My Requests
+                                        طلبات الخدمة
                                     </a>
-                                    <a href="{{ route('citizen.profile') }}"
+                                    <a href="{{ route('citizen.complaints.index') }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Profile
+                                        الشكاوي
                                     </a>
                                 @endif
                             </div>

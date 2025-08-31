@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\AdminControllers;
+namespace App\Http\Controllers\CitizenControllers;
 
 use App\Http\Controllers\Controller;
 use App\Mail\NewUserCreatedMail;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class ComplaintsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -114,8 +114,8 @@ class UserController extends Controller
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with('form', 'edit')
-                ->with('editing_user_id', $id); 
+                ->with('form', 'edit')       // <-- نحدد أن الفورم تعديل
+                ->with('editing_user_id', $id); // <-- حفظ الـ id للمودال
         }
         $user->name = $request->name;
         $user->email = $request->email;

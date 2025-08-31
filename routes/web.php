@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminControllers\RolesController;
 use App\Http\Controllers\AdminControllers\ServicesController;
 use App\Http\Controllers\AdminControllers\UserController;
 use App\Http\Controllers\CitizenControllers\CitizenController;
+use App\Http\Controllers\CitizenControllers\ComplaintsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeControllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
@@ -41,10 +42,7 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class);
-    // Route::get('/permissions', [PermissionsController::class, 'index'])->name('permissions');
     Route::resource('services', ServicesController::class);
-    Route::get('/requests', [AdminController::class, 'index'])->name('requests');
-    Route::get('/services', [ServicesController::class, 'index'])->name('services');
     Route::resource('/requests', RequestsController::class);
     Route::get('/requests/{id}/employees', [RequestsController::class, 'getEmployees'])->name('requests.employees');
     Route::post('/requests/{id}/assign', [RequestsController::class, 'assign'])->name('requests.assign');
@@ -60,8 +58,10 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
 });
 
 // Citizen Dashboard
-Route::middleware(['auth', 'role:citizen'])->group(function () {
-    Route::get('/citizen/dashboard', [CitizenController::class, 'index'])->name('citizen.dashboard');
+Route::prefix('citizen')->name('citizen.')->middleware(['auth', 'role:citizen'])->group(function () {
+    Route::get('/dashboard', [CitizenController::class, 'index'])->name('dashboard');
+    Route::resource('requests', \App\Http\Controllers\CitizenControllers\RequestsController::class);
+    Route::resource('complaints', ComplaintsController::class);
 });
 
 require __DIR__ . '/auth.php';

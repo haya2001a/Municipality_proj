@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('terms_conditions')->nullable();
             $table->text('notes')->nullable();
             $table->enum('status', ['فعّالة','غير فعّالة'])->default('فعّالة');
+            $table->enum('priority', ['غير عاجل','متوسط','عاجل']);
             $table->timestamps();
         });
     }

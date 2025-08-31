@@ -9,31 +9,47 @@
                 </div>
                 <div class="modal-body">
                     <div class="row g-3"> <!-- استخدام نفس grid system -->
-                        <div class="col-12">
+                        <div class="col-6">
                             <label class="form-label fw-semibold">اسم الخدمة</label>
                             <input type="text" name="name" id="editServiceName" class="form-control" required>
                         </div>
 
                         <div class="col-6">
+                            <label for="priority">الأولوية</label>
+                            <select name="priority" id="priority" class="form-select" required>
+                                <option value="" selected hidden>اختر الأولوية</option>
+                                <option value="غير عاجل">غير عاجل</option>
+                                <option value="متوسط">متوسط</option>
+                                <option value="عاجل">عاجل</option>
+                            </select>
+                            @error('priority')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <div class="col-6">
                             <label class="form-label fw-semibold">السعر</label>
-                            <input type="number" name="price" id="editServicePrice" class="form-control" step="0.01" min="0">
+                            <input type="number" name="price" id="editServicePrice" class="form-control"
+                                step="0.01" min="0">
                         </div>
 
                         <div class="col-3">
                             <label class="form-label fw-semibold">مدة البداية</label>
-                            <input type="number" name="processing_time_min" id="editProcessingTimeMin" class="form-control" min="0">
+                            <input type="number" name="processing_time_min" id="editProcessingTimeMin"
+                                class="form-control" min="0">
                         </div>
 
                         <div class="col-3">
                             <label class="form-label fw-semibold">مدة النهاية</label>
-                            <input type="number" name="processing_time_max" id="editProcessingTimeMax" class="form-control" min="0">
+                            <input type="number" name="processing_time_max" id="editProcessingTimeMax"
+                                class="form-control" min="0">
                         </div>
 
                         <div class="col-6">
                             <label class="form-label fw-semibold">القسم</label>
                             <select name="department_id" id="editDepartment" class="form-select" required>
                                 <option value="">اختر القسم</option>
-                                @foreach($departments as $department)
+                                @foreach ($departments as $department)
                                     <option value="{{ $department->id }}">{{ $department->name }}</option>
                                 @endforeach
                             </select>
