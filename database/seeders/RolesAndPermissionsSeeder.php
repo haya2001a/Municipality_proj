@@ -3,12 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Hash;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-
+use Illuminate\Support\Facades\Hash;
 class RolesAndPermissionsSeeder extends Seeder
 {
     /**
@@ -73,8 +72,8 @@ class RolesAndPermissionsSeeder extends Seeder
             ['email' => 'admin@gmail.com'],
             [
                 'name' => 'مؤيد رواشدة',
-                'password' => Hash::make('password'),
-                'national_id' => '123456789',
+                'password' => Hash::make('123'),
+                'national_id' => '123',
                 'phone' => '0591234567',
                 'gender' => 'ذكر',
                 'notes' => 'System administrator'

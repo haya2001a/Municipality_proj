@@ -42,6 +42,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class);
     Route::get('/permissions', [PermissionsController::class, 'index'])->name('permissions');
+    Route::resource('services', ServicesController::class);
+    Route::get('/requests', [AdminController::class, 'index'])->name('requests');
     Route::get('/services', [ServicesController::class, 'index'])->name('services');
     Route::resource('/requests', RequestsController::class);
     Route::get('/requests/{id}/employees', [RequestsController::class, 'getEmployees'])->name('requests.employees');

@@ -58,7 +58,7 @@
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                         إدارة الصلاحيات المتقدمة
                                     </a>
-                                    <a href="{{ route('admin.services') }}"
+                                    <a href="{{ route('admin.services.index') }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                         إدارة مجموعات الخدمات
                                     </a>
