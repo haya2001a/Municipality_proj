@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class);
-    Route::get('/permissions', [PermissionsController::class, 'index'])->name('permissions');
+    // Route::get('/permissions', [PermissionsController::class, 'index'])->name('permissions');
     Route::resource('services', ServicesController::class);
     Route::get('/requests', [AdminController::class, 'index'])->name('requests');
     Route::get('/services', [ServicesController::class, 'index'])->name('services');

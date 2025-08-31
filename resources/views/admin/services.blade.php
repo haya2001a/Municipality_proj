@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="d-flex align-items-center gap-3 flex-wrap">
-                        <form method="GET" action="{{ route('admin.services.index') }}" id="statusFilterForm"
+                        <form method="GET" action="{{ route('admin.services') }}" id="statusFilterForm"
                             class="d-flex align-items-center gap-2 mb-0">
                             <label for="statusFilter" class="mb-0 fw-semibold">الحالة:</label>
                             <select name="status" id="statusFilter" class="form-select w-auto form-select-sm">
@@ -35,7 +35,7 @@
                             </select>
                         </form>
                       
-                        <form method="GET" action="{{ route('admin.services.index') }}" id="departmentFilterForm"
+                        <form method="GET" action="{{ route('admin.services') }}" id="departmentFilterForm"
                             class="d-flex align-items-center gap-2 mb-0">
                             <label for="departmentFilter" class="mb-0 fw-semibold">القسم:</label>
                             <select name="department" id="departmentFilter" class="form-select w-auto form-select-sm">
@@ -49,7 +49,7 @@
                         </form>
                       
                       
-                        <form method="GET" action="{{ route('admin.services.index') }}" id="nameFilterForm"
+                        <form method="GET" action="{{ route('admin.services') }}" id="nameFilterForm"
                             class="d-flex align-items-center gap-2 mb-0">
                             <label for="nameFilter" class="mb-0 fw-semibold">الخدمة:</label>
                             <input type="text" name="name" id="nameFilter" class="form-control form-control-sm"
