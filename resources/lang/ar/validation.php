@@ -49,6 +49,7 @@ return [
         'string' => 'يجب أن يكون عدد حروف :attribute على الأقل :min.',
         'array' => 'يجب أن يحتوي :attribute على الأقل :min عناصر.',
     ],
+
     'not_in' => 'القيمة المختارة ل :attribute غير صالحة.',
     'numeric' => 'حقل :attribute يجب أن يكون رقماً.',
     'required' => 'حقل :attribute مطلوب.',
@@ -65,6 +66,8 @@ return [
         'phone' => 'الهاتف',
         'gender' => 'الجنس',
         'national_id' => 'الرقم الوطني',
+        'password' => 'كلمة المرور',
+        'new_password' => 'كلمة المرور الجديدة',
     ],
 
 ];
