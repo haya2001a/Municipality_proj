@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminControllers\AdminController;
 use App\Http\Controllers\AdminControllers\DepartmentsController;
 use App\Http\Controllers\AdminControllers\PermissionsController;
+use App\Http\Controllers\AdminControllers\RequestsController;
 use App\Http\Controllers\AdminControllers\RolesController;
 use App\Http\Controllers\AdminControllers\ServicesController;
 use App\Http\Controllers\AdminControllers\UserController;
@@ -42,7 +43,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::resource('users', UserController::class);
     Route::get('/permissions', [PermissionsController::class, 'index'])->name('permissions');
     Route::get('/services', [ServicesController::class, 'index'])->name('services');
-    Route::get('/requests', [AdminController::class, 'index'])->name('requests');
+    Route::resource('/requests', RequestsController::class);
+    Route::get('/requests/{id}/employees', [RequestsController::class, 'getEmployees'])->name('requests.employees');
+    Route::post('/requests/{id}/assign', [RequestsController::class, 'assign'])->name('requests.assign');
+
     Route::get('/roles', [RolesController::class, 'getRoles'])->name('roles');
     Route::get('/departments', [DepartmentsController::class, 'getDepartments'])->name('departments');
 

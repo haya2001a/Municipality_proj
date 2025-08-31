@@ -57,18 +57,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // $validated = $request->validate(User::rules());
-
-        // إذا فيه خطأ فاليديشن، Laravel بيرجع تلقائيًا => نضيف flag قبل redirect
-        // الطريقة الأسهل: استعمال try/catch + Validator
-
         $validator = Validator::make($request->all(), User::rules());
 
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with('form', 'add'); // <-- نحدد أن الفورم إضافة
+                ->with('form', 'add');
         }
 
         $user = User::create([
