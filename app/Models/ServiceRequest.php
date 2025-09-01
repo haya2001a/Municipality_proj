@@ -13,14 +13,8 @@ class ServiceRequest extends Model
     public static function rules()
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'service_id' => 'required|exists:services,id',
-            'status' => 'required|in:بانتظار الموافقة,مرفوض,مكتمل,مدفوع',
-            'priority' => 'required|in:غير عاجل,متوسط,عاجل',
-            'price' => 'nullable|numeric|min:0',
-            'assigned_to' => 'nullable|exists:users,id',
-            'department_id' => 'nullable|exists:departments,id',
-            'completed_at' => 'nullable|date',
+            'price' => 'nullable|numeric|min:0'
         ];
     }
 
