@@ -13,11 +13,8 @@ class Complaint extends Model
     public static function rules()
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'status' => 'required|in:قيد الانتظار,مرفوض,مكتمل',
-            'closed_at' => 'nullable|date',
+            'description' => 'required|string'
         ];
     }
 

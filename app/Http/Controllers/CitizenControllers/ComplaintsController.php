@@ -3,12 +3,8 @@
 namespace App\Http\Controllers\CitizenControllers;
 
 use App\Http\Controllers\Controller;
-use App\Mail\NewUserCreatedMail;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Complaint;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Validator;
 
 class ComplaintsController extends Controller
@@ -18,29 +14,17 @@ class ComplaintsController extends Controller
      */
     public function index(Request $request)
     {
-        $roleFilter = $request->input('role');
-        $nameFilter = $request->input('name');
+        $statusFilter = $request->input('status');
 
-        $users = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'admin');
-        });
+        $complaints = Complaint::where('user_id', auth()->id());
 
-
-        if ($roleFilter) {
-            $users->whereHas('roles', function ($query) use ($roleFilter) {
-                $query->where('name', $roleFilter);
-            });
+        if ($statusFilter) {
+            $complaints->where('status', $statusFilter);
         }
 
-        if ($nameFilter) {
-            $users->where('name', 'like', "%{$nameFilter}%");
-        }
+        $complaints = $complaints->latest()->paginate(10);
 
-        $users = $users->latest()->paginate(10);
-        
-        $roles = Role::where('name', '!=', 'admin')->get();
-
-        return view('admin.users', compact('users', 'roles'));
+        return view('citizen.complaints', compact('complaints'));
     }
 
     /**
@@ -48,57 +32,40 @@ class ComplaintsController extends Controller
      */
     public function create()
     {
-        return view('admin.users');
-
+        return view('citizen.complaints');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), User::rules());
-
+        $validator = Validator::make($request->all(), Complaint::rules());
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
-                ->withInput()
-                ->with('form', 'add');
+                ->withInput();
         }
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->national_id),
-            'national_id' => $request->national_id,
-            'phone' => $request->phone,
-            'gender' => $request->gender,
-            'department_id' => $request->department_id,
-            'notes' => $request->notes,
+        Complaint::create([
+            'user_id'     => auth()->id(),
+            'title'       => $request->title,
+            'description' => $request->description,
+            'status'      => 'قيد الانتظار', // default
+            'closed_at'   => null,
         ]);
-
-
-        $user->roles()->attach($request->role_id);
-        // Mail::to($user->email)->send(new NewUserCreatedMail($user));
-
-        return redirect()->route('admin.users.index')->with('success', 'تمت إضافة المستخدم بنجاح');
+        return redirect()->route('citizen.complaints.index')->with('success', 'تم إرسال الشكوى بنجاح');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        $user = User::findOrFail($id);
-        return response()->json($user);
+        $complaint = Complaint::where('user_id', auth()->id())->findOrFail($id);
+        return response()->json($complaint);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Complaint $complaint)
     {
-        return response()->json($user);
+        $this->authorize('update', $complaint);
+        return response()->json($complaint);
     }
 
     /**
@@ -106,28 +73,26 @@ class ComplaintsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
+        $complaint = Complaint::where('user_id', auth()->id())->findOrFail($id);
 
-        $validator = Validator::make($request->all(), User::rules($id));
+        $validator = Validator::make($request->all(), Complaint::rules());
 
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with('form', 'edit')       // <-- نحدد أن الفورم تعديل
-                ->with('editing_user_id', $id); // <-- حفظ الـ id للمودال
+                ->with('form', 'edit')
+                ->with('editing_complaint_id', $id);
         }
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->gender = $request->gender;
-        $user->national_id = $request->national_id;
 
+        $complaint->title       = $request->title;
+        $complaint->description = $request->description;
+        $complaint->status      = $request->status;
+        $complaint->closed_at   = $request->status === 'مكتمل' ? now() : null;
 
-        $user->save();
+        $complaint->save();
 
-        return redirect()->route('admin.users.index')->with('success', "تم تعديل بيانات المستخدم بنجاح");
-
+        return redirect()->route('citizen.complaints.index')->with('success', 'تم تعديل الشكوى بنجاح');
     }
 
     /**
@@ -135,9 +100,9 @@ class ComplaintsController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        $complaint = Complaint::where('user_id', auth()->id())->findOrFail($id);
+        $complaint->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'تم حذف المستخدم بنجاح');
+        return redirect()->route('citizen.complaints.index')->with('success', 'تم حذف الشكوى بنجاح');
     }
 }

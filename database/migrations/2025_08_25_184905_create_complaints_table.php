@@ -20,7 +20,7 @@ return new class extends Migration
                'قيد الانتظار','مرفوض','مكتمل'
             ])->default('قيد الانتظار');     
             $table->timestamp('closed_at')->nullable();
-
+            $table->timestamps();
              });
     
     }

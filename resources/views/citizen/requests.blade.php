@@ -1,126 +1,129 @@
 <x-app-layout>
-    <link rel="stylesheet" href="{{ Vite::asset('resources/css/users.css') }}">
+    <link rel="stylesheet" href="{{ Vite::asset('resources/css/tabels.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="{{ Vite::asset('resources/js/shared.js') }}"></script>
 
-    <div class="container mt-4 px-4">
+    <div class="container mt-5 px-4">
+
         @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">{{ session('success') }}</div>
+            <div class="alert alert-success alert-dismissible fade show rounded shadow-sm d-flex align-items-center"
+                role="alert">
+                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @endif
 
-        <div class="table-responsive px-5">
-            <table class="table table-bordered user-list">
-                <caption class="pb-3 text-start" style="caption-side: top;">
-                    <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
-                        <span class="fs-5 fw-bold">الطلبات الخاصة بي</span>
-                        <button type="button" class="btn btn-primary btn-sm px-3" data-bs-toggle="modal"
-                            data-bs-target="#addRequestModal">
-                            طلب خدمة جديدة
-                        </button>
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <h5 class="mb-0 fw-bold">الطلبات الخاصة بي</h5>
+                <button type="button"
+                    class="btn btn-gradient btn-sm px-4 py-2 rounded-pill d-flex align-items-center gap-2"
+                    data-bs-toggle="modal" data-bs-target="#addRequestModal">
+                    <i class="fas fa-plus"></i> طلب خدمة جديدة
+                </button>
+            </div>
+
+            <div class="card-body p-4">
+                {{-- Filters --}}
+                <form method="GET" action="{{ route('citizen.requests.index') }}" id="filtersForm"
+                    class="d-flex flex-wrap align-items-center gap-3 mb-4">
+
+                    <div class="filter-group">
+                        <label for="serviceFilter" class="fw-semibold mb-0">الخدمة:</label>
+                        <select name="service" id="serviceFilter" class="form-select filter-select">
+                            <option value="">الكل</option>
+                            @foreach ($services as $service)
+                                <option value="{{ $service->id }}" {{ request('service') == $service->id ? 'selected' : '' }}>
+                                    {{ $service->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
-
-                    <div class="d-flex align-items-center gap-3 flex-wrap">
-                        <form method="GET" action="{{ route('citizen.requests.index') }}" id="filtersForm"
-                            class="d-flex align-items-center gap-3 flex-wrap mb-0">
-                            <!-- Service Filter -->
-                            <div class="d-flex align-items-center gap-2">
-                                <label for="serviceFilter" class="mb-0 fw-semibold">الخدمة:</label>
-                                <select name="service" id="serviceFilter" class="form-select w-auto form-select-sm">
-                                    <option value="">الكل</option>
-                                    @foreach ($services as $service)
-                                        <option value="{{ $service->id }}"
-                                            {{ request('service') == $service->id ? 'selected' : '' }}>
-                                            {{ $service->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Status Filter -->
-                            <div class="d-flex align-items-center gap-2">
-                                <label for="statusFilter" class="mb-0 fw-semibold">الحالة:</label>
-                                <select name="status" id="statusFilter" class="form-select w-auto form-select-sm">
-                                    <option value="">الكل</option>
-                                    @foreach (['بانتظار الموافقة', 'مرفوض', 'مكتمل', 'مدفوع'] as $status)
-                                        <option value="{{ $status }}"
-                                            {{ request('status') == $status ? 'selected' : '' }}>
-                                            {{ $status }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Priority Filter -->
-                            <div class="d-flex align-items-center gap-2">
-                                <label for="priorityFilter" class="mb-0 fw-semibold">الأولوية:</label>
-                                <select name="priority" id="priorityFilter" class="form-select w-auto form-select-sm">
-                                    <option value="">الكل</option>
-                                    @foreach (['غير عاجل', 'متوسط', 'عاجل'] as $priority)
-                                        <option value="{{ $priority }}"
-                                            {{ request('priority') == $priority ? 'selected' : '' }}>
-                                            {{ $priority }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </form>
-
-                        <script>
-                            // submit form automatically when any filter changes
-                            $('#serviceFilter, #statusFilter, #priorityFilter').on('change keyup', function() {
-                                $('#filtersForm').submit();
-                            });
-                        </script>
+                    <div class="filter-group">
+                        <label for="statusFilter" class="fw-semibold mb-0">الحالة:</label>
+                        <select name="status" id="statusFilter" class="form-select filter-select">
+                            <option value="">الكل</option>
+                            @foreach (['بانتظار الموافقة', 'مرفوض', 'مكتمل', 'مدفوع'] as $status)
+                                <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
+                                    {{ $status }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
-                </caption>
 
-                <thead class="table-light">
-                    <tr>
-                        <th>الخدمة</th>
-                        <th>الحالة</th>
-                        <th>الأولوية</th>
-                        <th>السعر</th>
-                        <th>تاريخ الطلب</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($requests as $request)
-                        <tr>
-                            <td>{{ $request->service->name }}</td>
-                            <td>{{ $request->status }}</td>
-                            <td>{{ $request->priority }}</td>
-                            <td>{{ $request->price ?? '-' }}</td>
-                            <td>{{ $request->created_at->format('Y/m/d') }}</td>
+                    <div class="filter-group">
+                        <label for="priorityFilter" class="fw-semibold mb-0">الأولوية:</label>
+                        <select name="priority" id="priorityFilter" class="form-select filter-select">
+                            <option value="">الكل</option>
+                            @foreach (['غير عاجل', 'متوسط', 'عاجل'] as $priority)
+                                <option value="{{ $priority }}" {{ request('priority') == $priority ? 'selected' : '' }}>
+                                    {{ $priority }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </form>
 
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                <script>
+                    $('#serviceFilter, #statusFilter, #priorityFilter').on('change keyup', function () {
+                        $('#filtersForm').submit();
+                    });
+                </script>
+
+                {{-- Table --}}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light text-uppercase small">
+                            <tr>
+                                <th>الخدمة</th>
+                                <th>الحالة</th>
+                                <th>الأولوية</th>
+                                <th>السعر</th>
+                                <th>تاريخ الطلب</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($requests as $request)
+                                <tr>
+                                    <td>{{ $request->service->name }}</td>
+                                    <td class="status-column">
+                                        <span class="badge" data-status="{{ $request->status }}">
+                                            {{ $request->status }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span>
+                                            {{ $request->priority }}
+                                        </span>
+                                    </td>
+
+
+                                    <td>{{ $request->price ?? '-' }}</td>
+                                    <td>{{ $request->created_at->format('Y/m/d') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-center">{{ $requests->links() }}</div>
+            </div>
         </div>
-
-        <div class="mt-3">{{ $requests->links() }}</div>
     </div>
 
-    {{-- assign requests modal --}}
-    @include('citizen.addRequestModal');
+    {{-- Modals --}}
+    @include('citizen.addRequestModal')
 
     <script>
-        $(function() {
-            // filters submit
-            $('#serviceFilter, #statusFilter').on('change', function() {
-                $(this).closest('form').submit();
-            });
-
-            $(document).ready(function() {
-                // فتح المودال عند الضغط على الزر
-                $('#openAddRequestModal').click(function() {
+        $(function () {
+            $(document).ready(function () {
+                $('#openAddRequestModal').click(function () {
                     $('#addRequestModal').modal('show');
                 });
             });
         });
     </script>
-
 </x-app-layout>
