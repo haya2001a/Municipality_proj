@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CitizenControllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\RequestAttachment;
 use App\Models\Service;
 use App\Models\ServiceRequest;
 use App\Models\User;
@@ -55,6 +56,7 @@ class RequestsController extends Controller
      */
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), ServiceRequest::rules());
 
         if ($validator->fails()) {
@@ -69,10 +71,24 @@ class RequestsController extends Controller
         $requestModel->user_id = auth()->id();
         $requestModel->service_id = $service->id;
         $requestModel->department_id = $service->department_id;
-        $requestModel->priority = $service->priority;
-        $requestModel->price = $service->price;
+        $requestModel->priority = $service->priority ?? 'غير عاجل';
+        $requestModel->price = $service->price ?? null;
         $requestModel->status = 'بانتظار الموافقة';
         $requestModel->save();
+
+
+        if ($request->hasFile('documents')) {
+            foreach ($request->file('documents') as $file) {
+                $path = $file->store('service_requests/' . $requestModel->id, 'public');
+
+                RequestAttachment::create([
+                    'request_id' => $requestModel->id,
+                    'file_name' => basename($path),
+                    'file_type' => $file->getClientMimeType(),
+                    'file_size' => $file->getSize(),
+                ]);
+            }
+        }
 
         return redirect()->route('citizen.requests.index')->with('success', "تم إضافة طلب الخدمة بنجاح");
     }

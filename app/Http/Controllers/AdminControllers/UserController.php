@@ -4,7 +4,9 @@ namespace App\Http\Controllers\AdminControllers;
 
 use App\Http\Controllers\Controller;
 use App\Mail\NewUserCreatedMail;
+use App\Models\Trade;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -37,7 +39,7 @@ class UserController extends Controller
         }
 
         $users = $users->latest()->paginate(10);
-        
+
         $roles = Role::where('name', '!=', 'admin')->get();
 
         return view('admin.users', compact('users', 'roles'));
@@ -79,6 +81,19 @@ class UserController extends Controller
 
 
         $user->roles()->attach($request->role_id);
+
+        if ($request->has('has_license') && $request->has_license == '1') {
+            Trade::create([
+                'user_id' => $user->id,
+                'trade_name' => $request->trade_name,
+                'opened_since' => $request->opened_since,
+                'issue_date' => $request->issue_date,
+                'expiry_date' => Carbon::parse($request->issue_date)->addYear()->format('Y-m-d'),
+                'last_payment' => $request->last_payment,
+                'status' => $request->license_status,
+                'fees' => Trade::calculateFees($request->last_payment),
+            ]);
+        }
         // Mail::to($user->email)->send(new NewUserCreatedMail($user));
 
         return redirect()->route('admin.users.index')->with('success', 'تمت إضافة المستخدم بنجاح');
@@ -115,7 +130,7 @@ class UserController extends Controller
                 ->withErrors($validator)
                 ->withInput()
                 ->with('form', 'edit')
-                ->with('editing_user_id', $id); 
+                ->with('editing_user_id', $id);
         }
         $user->name = $request->name;
         $user->email = $request->email;

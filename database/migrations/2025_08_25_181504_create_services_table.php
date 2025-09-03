@@ -17,10 +17,8 @@ return new class extends Migration
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');
             $table->text('description')->nullable();
             $table->decimal('price', 10,2)->default(0);
-            $table->integer('processing_time_min')->nullable();
-            $table->integer('processing_time_max')->nullable();
+            $table->integer('processing_time');
             $table->json('required_documents')->nullable();
-            $table->text('terms_conditions')->nullable();
             $table->text('notes')->nullable();
             $table->enum('status', ['فعّالة','غير فعّالة'])->default('فعّالة');
             $table->enum('priority', ['غير عاجل','متوسط','عاجل']);

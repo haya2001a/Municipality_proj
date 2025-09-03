@@ -18,11 +18,6 @@
         <div class="card shadow-sm border-0">
             <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <h5 class="mb-0 fw-bold">الطلبات الخاصة بي</h5>
-                <button type="button"
-                    class="btn btn-gradient btn-sm px-4 py-2 rounded-pill d-flex align-items-center gap-2"
-                    data-bs-toggle="modal" data-bs-target="#addRequestModal">
-                    <i class="fas fa-plus"></i> طلب خدمة جديدة
-                </button>
             </div>
 
             <div class="card-body p-4">
@@ -113,17 +108,4 @@
             </div>
         </div>
     </div>
-
-    {{-- Modals --}}
-    @include('citizen.addRequestModal')
-
-    <script>
-        $(function () {
-            $(document).ready(function () {
-                $('#openAddRequestModal').click(function () {
-                    $('#addRequestModal').modal('show');
-                });
-            });
-        });
-    </script>
 </x-app-layout>

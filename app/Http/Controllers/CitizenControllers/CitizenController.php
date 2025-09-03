@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CitizenControllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
 use Illuminate\Http\Request;
 
 class CitizenController extends Controller
@@ -12,7 +13,9 @@ class CitizenController extends Controller
      */
     public function index()
     {
-         return view('citizen.dashboard');
+        $departments = Department::select('id', 'name', 'description')->orderBy('name')->get();
+
+        return view('citizen.dashboard', compact('departments'));
     }
 
     /**
@@ -61,5 +64,18 @@ class CitizenController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function getDepartmentsList()
+    {
+        $departments = Department::all();
+        return view('citizen.dashboard', compact('departments'));
+    }
+
+    public function getDepartmentServices($id)
+    {
+        $department = Department::with('services')->findOrFail($id);
+
+        return view('citizen.services', compact('department'));
     }
 }

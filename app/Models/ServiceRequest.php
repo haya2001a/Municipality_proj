@@ -14,7 +14,7 @@ class ServiceRequest extends Model
     {
         return [
             'service_id' => 'required|exists:services,id',
-            'price' => 'nullable|numeric|min:0'
+            'documents.*' => 'nullable|file|max:5120'
         ];
     }
 

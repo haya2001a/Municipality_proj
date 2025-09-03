@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('file_name');
             $table->string('file_type', 50);
             $table->integer('file_size')->nullable();
-            $table->enum('attachment_type', ['صورة هوية', 'صورة شخصية', 'شهادة', 'عقد', 'غيرها']);
             $table->timestamps();
         });
     }

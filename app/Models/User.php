@@ -56,4 +56,13 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class);
     }
+    public function requests()
+    {
+        return $this->hasMany(ServiceRequest::class, 'user_id');
+    }
+
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class, 'user_id');
+    }
 }

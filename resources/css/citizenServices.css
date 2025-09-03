@@ -1,0 +1,29 @@
+.elegant-card {
+    border-radius: 18px;
+    background: #fff;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+.elegant-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.btn-modern {
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    color: #fff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+}
+.btn-modern:hover {
+    transform: translateY(-2px);
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+}
+.modal-title {
+    color: #1e3c72;
+}
+.filepond--file-action-button {
+    color: #1e3c72 !important;
+}

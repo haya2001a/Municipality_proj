@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminControllers\ServicesController;
 use App\Http\Controllers\AdminControllers\UserController;
 use App\Http\Controllers\CitizenControllers\CitizenController;
 use App\Http\Controllers\CitizenControllers\ComplaintsController;
+use App\Http\Controllers\CitizenControllers\TradeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeControllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
@@ -60,8 +61,12 @@ Route::middleware(['auth', 'role:employee'])->group(function () {
 // Citizen Dashboard
 Route::prefix('citizen')->name('citizen.')->middleware(['auth', 'role:citizen'])->group(function () {
     Route::get('/dashboard', [CitizenController::class, 'index'])->name('dashboard');
+    Route::get('/getDepartmentsList', [CitizenController::class, 'getDepartmentsList'])->name('getDepartmentsList');
+    Route::get('/getDepartmentServices/{id}', [CitizenController::class, 'getDepartmentServices'])->name('getDepartmentServices');
     Route::resource('requests', \App\Http\Controllers\CitizenControllers\RequestsController::class);
     Route::resource('complaints', ComplaintsController::class);
+    Route::get('trades/{id}', [TradeController::class, 'show'])->name('trades.show');
+
 });
 
 require __DIR__ . '/auth.php';

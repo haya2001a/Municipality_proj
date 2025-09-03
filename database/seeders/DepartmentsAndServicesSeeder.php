@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Department;
 use App\Models\Service;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DepartmentsAndServicesSeeder extends Seeder
@@ -14,118 +13,192 @@ class DepartmentsAndServicesSeeder extends Seeder
      */
     public function run(): void
     {
-       $departments = [
+        // قسم الكهرباء
+        $electricity = Department::create([
+            'name' => 'قسم الكهرباء',
+            'description' => 'جميع خدمات الكهرباء (اشتراكات، نقل، فحص، شبكات)',
+            'phone' => '02-2222222',
+            'location' => 'مبنى البلدية - الطابق الأول',
+            'working_hours' => json_encode(['الأحد-الخميس' => '8:00-14:00']),
+        ]);
+
+        // خدمات الكهرباء
+        $services = [
             [
-                'name' => 'الكهرباء',
-                'description' => 'خدمات الكهرباء مثل اشتراك جديد، نقل عداد، فصل تيار، إلخ',
-                'phone' => '0591111111',
-                'location' => 'مكتب البلدية الرئيسي',
-                'working_hours' => json_encode(['السبت-الخميس' => '08:00-16:00'])
+                'name' => 'طلب إنارة',
+                'description' => 'تقديم طلب إنارة جديدة',
+                'processing_time' => 3,
+                'required_documents' => [],
+                'notes' => 'المسار: مركز خدمات الجمهور → قسم الكهرباء → مركز خدمات الجمهور → قسم الكهرباء',
             ],
             [
-                'name' => 'المياه',
-                'description' => 'خدمات المياه مثل اشتراك، صيانة الشبكة، قراءة العداد، إلخ',
-                'phone' => '0592222222',
-                'location' => 'مبنى قسم المياه',
-                'working_hours' => json_encode(['السبت-الخميس' => '08:00-16:00'])
+                'name' => 'طلب اشتراك 1 فاز جديد',
+                'description' => 'اشتراك كهرباء منزلي 1 فاز',
+                'processing_time' => 6,
+                'required_documents' => ['صورة هوية', 'رخصة بناء (إن وجدت)', 'براءة ذمة'],
+                'notes' => 'المسار: مركز خدمات الجمهور → الأقسام الهندسية → قسم الكهرباء → الدائرة المالية → وحدة خدمات الجمهور → قسم الكهرباء',
             ],
             [
-                'name' => 'الحرف والصناعات',
-                'description' => 'ترخيص وتجديد وإلغاء رخص الحرف والصناعات',
-                'phone' => '0593333333',
-                'location' => 'مكتب الحرف',
-                'working_hours' => json_encode(['السبت-الخميس' => '08:00-16:00'])
+                'name' => 'طلب اشتراك 3 فاز جديد',
+                'description' => 'اشتراك كهرباء 3 فاز',
+                'processing_time' => 6,
+                'required_documents' => ['صورة هوية', 'رخصة بناء (إن وجدت)', 'براءة ذمة'],
+                'notes' => 'المسار: مركز خدمات الجمهور → الأقسام الهندسية → قسم الكهرباء → الدائرة المالية',
             ],
             [
-                'name' => 'الرخص التجارية',
-                'description' => 'رخصة محل، رخصة مطعم، رخصة صيدلية، إلخ',
-                'phone' => '0594444444',
-                'location' => 'مكتب الرخص التجارية',
-                'working_hours' => json_encode(['السبت-الخميس' => '08:00-16:00'])
+                'name' => 'نقل اشتراك كهرباء',
+                'description' => 'نقل اشتراك كهرباء من موقع لآخر',
+                'processing_time' => 6,
+                'required_documents' => ['صورة هوية', 'رخصة بناء (إن وجدت)', 'براءة ذمة'],
+                'notes' => 'المسار: مركز خدمات الجمهور → الأقسام الهندسية → قسم الكهرباء → الدائرة المالية → وحدة خدمات الجمهور → قسم الكهرباء',
             ],
             [
-                'name' => 'التراخيص والبناء',
-                'description' => 'رخصة بناء، ترميم، هدم',
-                'phone' => '0595555555',
-                'location' => 'قسم البناء',
-                'working_hours' => json_encode(['السبت-الخميس' => '08:00-16:00'])
+                'name' => 'تفعيل اشتراك كهرباء',
+                'description' => 'إعادة تفعيل اشتراك كهرباء قائم',
+                'processing_time' => 6,
+                'required_documents' => ['صورة هوية', 'رخصة بناء (إن وجدت)', 'براءة ذمة'],
+                'notes' => 'المسار: الأقسام الهندسية → مركز خدمات الجمهور → قسم الكهرباء → الدائرة المالية → وحدة خدمات الجمهور → قسم الكهرباء',
             ],
             [
-                'name' => 'النظافة والبيئة',
-                'description' => 'جمع النفايات، تنظيف الشوارع',
-                'phone' => '0596666666',
-                'location' => 'مكتب البيئة',
-                'working_hours' => json_encode(['السبت-الخميس' => '08:00-16:00'])
+                'name' => 'تحويل اشتراك كهرباء',
+                'description' => 'تحويل ملكية اشتراك كهرباء',
+                'processing_time' => 6,
+                'required_documents' => ['صورة هوية', 'رخصة بناء (إن وجدت)', 'براءة ذمة'],
+                'notes' => 'المسار: مركز خدمات الجمهور → الأقسام الهندسية → قسم الكهرباء → الدائرة المالية → وحدة خدمات الجمهور',
             ],
             [
-                'name' => 'الطرق والمواصلات',
-                'description' => 'إشارات المرور، حفر الشوارع',
-                'phone' => '0597777777',
-                'location' => 'قسم المواصلات',
-                'working_hours' => json_encode(['السبت-الخميس' => '08:00-16:00'])
+                'name' => 'رفع أمبيرات',
+                'description' => 'زيادة قدرة الاشتراك الكهربائي',
+                'processing_time' => 6,
+                'required_documents' => ['صورة هوية', 'رخصة بناء (إن وجدت)', 'براءة ذمة'],
+                'notes' => 'المسار: مركز خدمات الجمهور → الأقسام الهندسية → الدائرة المالية → قسم الكهرباء → وحدة خدمات الجمهور',
             ],
             [
-                'name' => 'الخدمات الاجتماعية',
-                'description' => 'مساعدات، برامج تأهيل',
-                'phone' => '0598888888',
-                'location' => 'مكتب الخدمات الاجتماعية',
-                'working_hours' => json_encode(['السبت-الخميس' => '08:00-16:00'])
+                'name' => 'طلب ربط نظام شمسي',
+                'description' => 'ربط نظام شمسي بالاشتراك',
+                'processing_time' => 6,
+                'required_documents' => ['صورة هوية', 'رخصة بناء (إن وجدت)', 'براءة ذمة'],
+                'notes' => 'المسار: مركز خدمات الجمهور → الأقسام الهندسية → قسم الكهرباء → الدائرة المالية → وحدة خدمات الجمهور → قسم الكهرباء',
+            ],
+            [
+                'name' => 'نقل أعمدة',
+                'description' => 'طلب نقل أعمدة كهرباء',
+                'processing_time' => 7,
+                'required_documents' => [],
+                'notes' => 'المسار: مركز خدمات الجمهور → قسم الكهرباء → مركز خدمات الجمهور → قسم الكهرباء',
+            ],
+            [
+                'name' => 'نقل شبكات',
+                'description' => 'طلب نقل شبكات كهرباء',
+                'processing_time' => 7,
+                'required_documents' => [],
+                'notes' => 'المسار: مركز خدمات الجمهور → قسم الكهرباء',
+            ],
+            [
+                'name' => 'فحص عداد',
+                'description' => 'طلب فحص عداد كهرباء',
+                'processing_time' => 3,
+                'required_documents' => [],
+                'notes' => 'المسار: قسم الكهرباء → مركز خدمات الجمهور → مركز خدمات الجمهور → قسم الكهرباء',
+            ],
+            [
+                'name' => 'وصلة مؤقتة',
+                'description' => 'طلب توصيل وصلة كهرباء مؤقتة',
+                'processing_time' => 3,
+                'required_documents' => [],
+                'notes' => 'المسار: مركز خدمات الجمهور → قسم الكهرباء',
+            ],
+            [
+                'name' => 'التنازل عن اشتراك كهرباء',
+                'description' => 'التنازل عن اشتراك كهرباء',
+                'processing_time' => 5,
+                'required_documents' => ['صورة هوية', 'براءة ذمة'],
+                'notes' => 'المسار: مركز خدمات الجمهور → قسم الكهرباء → الدائرة المالية',
+            ],
+            [
+                'name' => 'إيقاف اشتراك كهرباء',
+                'description' => 'طلب إيقاف مؤقت أو دائم للاشتراك',
+                'processing_time' => 5,
+                'required_documents' => ['صورة هوية'],
+                'notes' => 'المسار: مركز خدمات الجمهور → قسم الكهرباء → الدائرة المالية → وحدة خدمات الجمهور',
             ],
         ];
 
-        foreach ($departments as $deptData) {
-            // Create department if it does not exist
-            $department = Department::firstOrCreate(
-                ['name' => $deptData['name']],
-                $deptData
-            );
+        foreach ($services as $srv) {
+            Service::create([
+                'name' => $srv['name'],
+                'department_id' => $electricity->id,
+                'description' => $srv['description'],
+                'price' => 0,
+                'processing_time' => $srv['processing_time'],
+                'required_documents' => json_encode($srv['required_documents']),
+                'notes' => $srv['notes'],
+                'status' => 'فعّالة',
+                'priority' => 'متوسط',
+            ]);
+        }
 
-            // Create default services for each department
-            switch ($department->name) {
-                case 'الكهرباء':
-                    $services = ['اشتراك جديد', 'نقل عداد', 'فصل تيار'];
-                    break;
-                case 'المياه':
-                    $services = ['اشتراك مياه', 'صيانة شبكة', 'قراءة عداد'];
-                    break;
-                case 'الحرف والصناعات':
-                    $services = ['ترخيص حرفة', 'تجديد رخصة', 'إلغاء رخصة'];
-                    break;
-                case 'الرخص التجارية':
-                    $services = ['رخصة محل', 'رخصة مطعم', 'رخصة صيدلية'];
-                    break;
-                case 'التراخيص والبناء':
-                    $services = ['رخصة بناء', 'ترميم', 'هدم'];
-                    break;
-                case 'النظافة والبيئة':
-                    $services = ['جمع نفايات', 'تنظيف شوارع'];
-                    break;
-                case 'الطرق والمواصلات':
-                    $services = ['إشارات مرور', 'حفر شوارع'];
-                    break;
-                case 'الخدمات الاجتماعية':
-                    $services = ['مساعدات', 'برامج تأهيل'];
-                    break;
-                default:
-                    $services = [];
-            }
+        // قسم المياه
+        $water = Department::create([
+            'name' => 'قسم المياه',
+            'description' => 'جميع خدمات المياه (اشتراكات، تفعيل، إيقاف، نقل)',
+            'phone' => '02-3333333',
+            'location' => 'مبنى البلدية - الطابق الثاني',
+            'working_hours' => json_encode(['الأحد-الخميس' => '8:00-14:00']),
 
-            foreach ($services as $serviceName) {
-                // Create service if it does not exist
-                Service::firstOrCreate(
-                    ['name' => $serviceName, 'department_id' => $department->id],
-                    [
-                        'description' => $serviceName . ' خدمة', 
-                        'price' => 0,
-                        'processing_time_min' => null,
-                        'processing_time_max' => null,
-                        'required_documents' => json_encode([]),
-                        'terms_conditions' => '',
-                        'notes' => '',
-                        'status' => 'فعّالة'
-                    ]
-                );
-            }
+        ]);
+
+        // خدمات المياه
+        $waterServices = [
+            [
+                'name' => 'اشتراك مياه جديد',
+                'description' => 'طلب اشتراك مياه جديد',
+                'processing_time' => 14,
+                'required_documents' => ['صورة هوية شخصية'],
+                'notes' => 'المسار: مركز خدمات الجمهور → دائرة الهندسة → دائرة الخدمات والصحة (قسم المياه) → الدائرة المالية → مركز خدمات الجمهور → قسم المياه',
+            ],
+            [
+                'name' => 'تفعيل اشتراك مياه',
+                'description' => 'إعادة تفعيل اشتراك مياه',
+                'processing_time' => 14,
+                'required_documents' => ['صورة هوية شخصية'],
+                'notes' => 'المسار: مركز خدمات الجمهور → دائرة الهندسة → دائرة الخدمات والصحة (قسم المياه) → الدائرة المالية → مركز خدمات الجمهور → قسم المياه',
+            ],
+            [
+                'name' => 'إيقاف اشتراك مياه',
+                'description' => 'طلب إيقاف اشتراك مياه',
+                'processing_time' => 7,
+                'required_documents' => ['صورة هوية شخصية'],
+                'notes' => 'المسار: مركز خدمات الجمهور → دائرة الخدمات والصحة (قسم المياه) → الدائرة المالية → مركز خدمات الجمهور → قسم المياه',
+            ],
+            [
+                'name' => 'تنازل عن اشتراك مياه',
+                'description' => 'التنازل عن اشتراك مياه',
+                'processing_time' => 7,
+                'required_documents' => ['صورة هوية شخصية'],
+                'notes' => 'المسار: مركز خدمات الجمهور → دائرة الهندسة → دائرة الخدمات والصحة (قسم المياه) → الدائرة المالية → مركز خدمات الجمهور → قسم المياه',
+            ],
+            [
+                'name' => 'نقل اشتراك مياه',
+                'description' => 'نقل اشتراك مياه في نفس الموقع',
+                'processing_time' => 7,
+                'required_documents' => ['صورة هوية شخصية'],
+                'notes' => 'المسار: مركز خدمات الجمهور → دائرة الهندسة → دائرة الخدمات والصحة (قسم المياه) → الدائرة المالية → مركز خدمات الجمهور → قسم المياه',
+            ],
+        ];
+
+        foreach ($waterServices as $srv) {
+            Service::create([
+                'name' => $srv['name'],
+                'department_id' => $water->id,
+                'description' => $srv['description'],
+                'price' => 0,
+                'processing_time' => $srv['processing_time'],
+                'required_documents' => json_encode($srv['required_documents']),
+                'notes' => $srv['notes'],
+                'status' => 'فعّالة',
+                'priority' => 'متوسط',
+            ]);
         }
     }
 }

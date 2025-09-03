@@ -1,0 +1,197 @@
+:root {
+    --primary-color: #8faccb;
+    --success-color: #61b374;
+    --warning-color: #e9d599;
+    --danger-color: #740510b2;
+    --info-color: #c0f0f8;
+    --dark-color: #555f6a;
+    --light-color: #f8f9fa;
+    --shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.license-card {
+    background: white;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.3s ease;
+}
+
+.license-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header-custom {
+    background: linear-gradient(135deg, var(--dark-color), #5f6d7c);
+    padding: 1.5rem;
+    border-radius: 0;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    padding: 1.2rem;
+    background: #f8f9fa;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.info-item:hover {
+    background: white;
+    box-shadow: var(--shadow);
+    border-color: #e9ecef;
+}
+
+.highlight-item {
+    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+    border: 2px solid var(--primary-color);
+}
+
+.info-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: white;
+    margin-left: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.info-icon i {
+    font-size: 1.2rem;
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-label {
+    display: block;
+    font-size: 0.875rem;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.primary-text {
+    color: var(--primary-color) !important;
+    font-size: 1.3rem !important;
+}
+
+.financial-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    height: 100%;
+}
+
+.financial-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.fees-card {
+    border-color: var(--warning-color);
+}
+
+.fees-card .financial-icon {
+    color: var(--warning-color);
+}
+
+.paid-card {
+    border-color: var(--success-color);
+}
+
+.paid-card .financial-icon {
+    color: var(--success-color);
+}
+
+.remaining-card {
+    border-color: var(--danger-color);
+}
+
+.remaining-card .financial-icon {
+    color: var(--danger-color);
+}
+
+.financial-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.financial-label {
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.financial-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--dark-color);
+}
+
+.currency {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .info-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+    }
+
+    .info-icon {
+        margin-left: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .financial-card {
+        margin-bottom: 1rem;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.arabic-text {
+    font-family: "Amiri", "Times New Roman", serif;
+}
