@@ -14,8 +14,8 @@
                         <!-- اسم الخدمة -->
                         <div class="col-md-6">
                             <label class="form-label">اسم الخدمة</label>
-                            <input type="text" name="name"
-                                class="form-control @error('name') is-invalid @enderror" required>
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
+                                required>
                             @error('name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -46,58 +46,74 @@
                             @enderror
                         </div>
 
-                        <!-- المدة الدنيا -->
                         <div class="col-md-6">
-                            <label class="form-label">المدة الدنيا (بالأيام)</label>
-                            <input type="number" name="processing_time_min"
-                                class="form-control @error('processing_time_min') is-invalid @enderror" required>
-                            @error('processing_time_min')
+                            <label class="form-label">مدة الإنجاز (بالأيام)</label>
+                            <input type="number" name="processing_time"
+                                class="form-control @error('processing_time') is-invalid @enderror" required>
+                            @error('processing_time')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        <!-- المدة القصوى -->
-                        <div class="col-md-6">
-                            <label class="form-label">المدة القصوى (بالأيام)</label>
-                            <input type="number" name="processing_time_max"
-                                class="form-control @error('processing_time_max') is-invalid @enderror" required>
-                            @error('processing_time_max')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
 
-                        <!-- الحالة -->
-                        <div class="col-md-6">
-                            <label class="form-label">الحالة</label>
-                            <select name="status" class="form-select @error('status') is-invalid @enderror" required>
-                                <option value="" disabled selected hidden>اختر الحالة</option>
-                                <option value="فعّالة">فعّالة</option>
-                                <option value="غير فعّالة">غير فعّالة</option>
-                            </select>
-                            @error('status')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        <!-- الحالة والأولوية بنفس السطر وبنفس الطول -->
+                        <div class="col-12 d-flex gap-3">
+                            <!-- الحالة -->
+                            <div class="flex-fill d-flex flex-column">
+                                <label class="form-label">الحالة</label>
+                                <select name="status" class="form-select h-100 @error('status') is-invalid @enderror"
+                                    required>
+                                    <option value="" disabled selected hidden>اختر الحالة</option>
+                                    <option value="فعّالة">فعّالة</option>
+                                    <option value="غير فعّالة">غير فعّالة</option>
+                                </select>
+                                @error('status')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-                        <div>
-                            <div class="form-group mb-3" class="col-md-6">
-                                <label for="priority">الأولوية</label>
-                                <select name="priority" id="priority" class="form-select" required>
-                                    <option value="" selected hidden>اختر الأولوية</option>
+
+                            <div class="flex-fill d-flex flex-column">
+                                <label class="form-label">الأولوية</label>
+                                <select name="priority"
+                                    class="form-select h-100 @error('priority') is-invalid @enderror" required>
+                                    <option value="" hidden>اختر الأولوية</option>
                                     <option value="غير عاجل">غير عاجل</option>
                                     <option value="متوسط">متوسط</option>
                                     <option value="عاجل">عاجل</option>
                                 </select>
                                 @error('priority')
-                                    <div class="text-danger">{{ $message }}</div>
+                                    <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
+
+
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">الوثائق المطلوبة</label>
+                            <textarea name="required_documents"
+                                class="form-control @error('required_documents') is-invalid @enderror"
+                                placeholder="اكتب الوثائق المطلوبة لكل خدمة، وافصل بينها بفاصلة أو سطر جديد"></textarea>
+                            @error('required_documents')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <!-- الوصف -->
                         <div class="col-12">
                             <label class="form-label">الوصف</label>
-                            <textarea name="description" class="form-control @error('description') is-invalid @enderror"></textarea>
+                            <textarea name="description"
+                                class="form-control @error('description') is-invalid @enderror"></textarea>
                             @error('description')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <!-- الملاحظات -->
+                        <div class="col-12">
+                            <label class="form-label">مسار الخدمة</label>
+                            <textarea name="notes" class="form-control @error('notes') is-invalid @enderror"
+                                placeholder="اكتب مسار الخدمة"></textarea>
+                            @error('notes')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>

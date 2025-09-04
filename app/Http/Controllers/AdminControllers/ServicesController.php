@@ -67,10 +67,19 @@ class ServicesController extends Controller
                 ->with('form', 'add'); // لتحديد مودال الإضافة
         }
 
-        Service::create($request->all());
+        $data = $request->all();
+
+        // تجهيز الوثائق المطلوبة
+        if (!empty($data['required_documents'])) {
+            $docsArray = preg_split("/\r\n|\n|\r|,/", $data['required_documents']);
+            $data['required_documents'] = json_encode(array_map('trim', $docsArray));
+        }
+
+        Service::create($data);
 
         return redirect()->route('admin.services.index')->with('success', 'تمت إضافة الخدمة بنجاح');
     }
+
 
     /**
      * عرض خدمة محددة (JSON)
