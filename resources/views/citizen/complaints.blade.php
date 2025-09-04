@@ -29,6 +29,7 @@
                 <form method="GET" action="{{ route('citizen.complaints.index') }}" id="filtersForm"
                     class="d-flex flex-wrap align-items-center gap-3 mb-4">
 
+                    {{-- فلتر الحالة --}}
                     <div class="filter-group">
                         <label for="statusFilter" class="fw-semibold mb-0">الحالة:</label>
                         <select name="status" id="statusFilter" class="form-select filter-select">
@@ -41,10 +42,23 @@
                         </select>
                     </div>
 
+                    {{-- فلتر القسم --}}
+                    <div class="filter-group">
+                        <label for="departmentFilter" class="fw-semibold mb-0">القسم:</label>
+                        <select name="department_id" id="departmentFilter" class="form-select filter-select">
+                            <option value="">الكل</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
+                                    {{ $department->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                 </form>
 
                 <script>
-                    $('#statusFilter').on('change keyup', function () {
+                    $('#statusFilter, #departmentFilter').on('change keyup', function () {
                         $('#filtersForm').submit();
                     });
                 </script>
@@ -56,6 +70,7 @@
                             <tr>
                                 <th>عنوان الشكوى</th>
                                 <th>الوصف</th>
+                                <th>القسم</th>
                                 <th>الحالة</th>
                                 <th>تاريخ الإغلاق</th>
                                 <th>تاريخ التقديم</th>
@@ -66,6 +81,7 @@
                                 <tr class="align-middle">
                                     <td class="fw-semibold">{{ $complaint->title }}</td>
                                     <td>{{ Str::limit($complaint->description, 50) }}</td>
+                                    <td>{{ $complaint->department->name}}</td>
                                     <td class="status-column">
                                         <span class="badge" data-status="{{ $complaint->status }}">
                                             {{ $complaint->status }}
@@ -94,6 +110,5 @@
             });
         });
     </script>
-
 
 </x-app-layout>

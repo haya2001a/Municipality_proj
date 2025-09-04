@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CitizenControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Complaint;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,6 +16,7 @@ class ComplaintsController extends Controller
     public function index(Request $request)
     {
         $statusFilter = $request->input('status');
+        $departmentFilter = $request->input('department_id');
 
         $complaints = Complaint::where('user_id', auth()->id());
 
@@ -22,9 +24,15 @@ class ComplaintsController extends Controller
             $complaints->where('status', $statusFilter);
         }
 
+        if ($departmentFilter) {
+            $complaints->where('department_id', $departmentFilter);
+        }
+
         $complaints = $complaints->latest()->paginate(10);
 
-        return view('citizen.complaints', compact('complaints'));
+        $departments = Department::all();
+
+        return view('citizen.complaints', compact('complaints', 'departments'));
     }
 
     /**
@@ -44,11 +52,12 @@ class ComplaintsController extends Controller
                 ->withInput();
         }
         Complaint::create([
-            'user_id'     => auth()->id(),
-            'title'       => $request->title,
+            'user_id' => auth()->id(),
+            'title' => $request->title,
             'description' => $request->description,
-            'status'      => 'قيد الانتظار', // default
-            'closed_at'   => null,
+            'department_id'=> $request->department_id,
+            'status' => 'قيد الانتظار', 
+            'closed_at' => null,
         ]);
         return redirect()->route('citizen.complaints.index')->with('success', 'تم إرسال الشكوى بنجاح');
     }
@@ -85,10 +94,10 @@ class ComplaintsController extends Controller
                 ->with('editing_complaint_id', $id);
         }
 
-        $complaint->title       = $request->title;
+        $complaint->title = $request->title;
         $complaint->description = $request->description;
-        $complaint->status      = $request->status;
-        $complaint->closed_at   = $request->status === 'مكتمل' ? now() : null;
+        $complaint->status = $request->status;
+        $complaint->closed_at = $request->status === 'مكتمل' ? now() : null;
 
         $complaint->save();
 

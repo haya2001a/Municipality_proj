@@ -10,13 +10,21 @@
                     <div class="form-group mb-3">
                         <label for="title">عنوان الشكوى</label>
                         <input type="text" name="title" id="title" class="form-control" required
-                               placeholder="أدخل عنوان الشكوى">
+                            placeholder="أدخل عنوان الشكوى">
                     </div>
-
+                    <div class="form-group mb-3">
+                        <label for="department_id">القسم</label>
+                        <select name="department_id" id="department_id" class="form-select" required>
+                            <option value="" hidden >اختر القسم</option>
+                            @foreach($departments as $department)
+                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="form-group mb-3">
                         <label for="description">الوصف</label>
                         <textarea name="description" id="description" class="form-control" rows="4" required
-                        placeholder="أدخل تفاصيل الشكوى"></textarea>
+                            placeholder="أدخل تفاصيل الشكوى"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
