@@ -32,62 +32,6 @@
                     @endif
 
 
-                    <!-- Dropdown Sections based on Role -->
-                    <div x-data="{ openSection: false }" class="relative">
-                        <button @click="openSection = !openSection"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white hover:text-gray-700 rounded-md">
-                            الأقسام
-                            <svg class="mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </button>
-
-                        <!-- Dropdown menu -->
-                        <div x-show="openSection" @click.away="openSection = false"
-                            class="absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 right-0">
-                            <div class="py-1 text-right">
-                                @if ($user->hasRole('admin'))
-                                    <!-- Admin Sections -->
-                                    <a href="{{ route('admin.users.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        إدارة المستخدمين
-                                    </a>
-                                  
-                                    <a href="{{ route('admin.services.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        إدارة مجموعات الخدمات
-                                    </a>
-                                    <a href="{{ route('admin.requests.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        إدارة الطلبات
-                                    </a>
-                                @elseif($user->hasRole('Employee'))
-                                    <!-- Employee Sections -->
-                                    <a href="{{ route('employee.tasks') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Employee Tasks
-                                    </a>
-                                    <a href="{{ route('employee.reports') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Reports
-                                    </a>
-                                @else
-                                    <!-- Citizen Sections -->
-                                    <a href="{{ route('citizen.requests.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        طلبات الخدمة
-                                    </a>
-                                    <a href="{{ route('citizen.complaints.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        الشكاوي
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 

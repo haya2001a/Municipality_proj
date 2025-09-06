@@ -13,7 +13,7 @@ use App\Http\Controllers\CitizenControllers\TradeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeControllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CitizenControllers\ChatBotController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -66,7 +66,7 @@ Route::prefix('citizen')->name('citizen.')->middleware(['auth', 'role:citizen'])
     Route::resource('requests', \App\Http\Controllers\CitizenControllers\RequestsController::class);
     Route::resource('complaints', ComplaintsController::class);
     Route::get('trades/{id}', [TradeController::class, 'show'])->name('trades.show');
-
+Route::post('/gemini-chat', [ChatBotController::class, 'chat'])->name('gemini-chat');
 });
 
 require __DIR__ . '/auth.php';
