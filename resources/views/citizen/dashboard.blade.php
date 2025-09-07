@@ -3,7 +3,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     @vite(['resources/css/citizenDashboard.css'])
-
     <x-slot name="header">
         <div class="dashboard-header">
             <h1>مرحباً {{ auth()->user()->name }}</h1>
@@ -11,7 +10,6 @@
             <p>اختر الخدمة التي تريد الوصول إليها</p>
         </div>
     </x-slot>
-
     <div class="dashboard-content">
         <div class="container">
             @php
@@ -53,7 +51,6 @@
                 }
             @endphp
 
-            <!-- إحصائيات سريعة -->
             <div class="stats-section mb-5">
                 <div class="stat-card stat-primary">
                     <h4>{{ auth()->user()->requests()->count() }}</h4>
@@ -73,13 +70,11 @@
                 </div>
             </div>
 
-            <!-- عنوان الخدمات -->
             <div class="section-header text-center mb-4">
                 <h3 class="section-title">الخدمات المتاحة</h3>
                 <p class="section-subtitle">اختر الخدمة أو القسم الذي تريد الوصول إليه</p>
             </div>
 
-            <!-- Swiper -->
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
                     @foreach ($cards as $card)
@@ -98,16 +93,20 @@
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
             </div>
+<!-- Chatbot Container -->
+<div id="gemini-chatbot" style="position:fixed; bottom:20px; right:20px; width:350px; max-width:90%; background:white; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.2); overflow:hidden; display:flex; flex-direction:column; z-index:9999; font-family:sans-serif;">
+    <div id="chat-header" style="  background: var(--primary-color); color: white;border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer;box-shadow: var(--shadow);">
+        💬
+    </div>
+    <div id="chat-body" style="flex:1; padding:10px; display:none; flex-direction:column; overflow-y:auto; max-height:400px;">
+        <div id="messages" style="flex:1; overflow-y:auto; margin-bottom:10px;"></div>
+        <div style="display:flex; gap:5px;">
+            <input type="text" id="chat-input" placeholder="اكتب رسالتك..." style="flex:1; padding:8px; border-radius:10px; border:1px solid #ccc;">
+            <button id="chat-send" style="padding:8px 12px; border:none; background:#3b82f6; color:white; border-radius:10px; cursor:pointer;">إرسال</button>
+        </div>
+    </div>
+</div>
 
-            <!-- روابط سريعة -->
-            <div class="quick-links-section mt-5">
-                <div class="quick-links-grid">
-                    <a href="#" class="quick-link"><i class="fas fa-file-alt"></i><span>طلب جديد</span></a>
-                    <a href="#" class="quick-link"><i class="fas fa-history"></i><span>السجل</span></a>
-                    <a href="#" class="quick-link"><i class="fas fa-user-edit"></i><span>الملف الشخصي</span></a>
-                    <a href="#" class="quick-link"><i class="fas fa-question-circle"></i><span>المساعدة</span></a>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -158,7 +157,56 @@
     </style>
 
     <script>
-        const swiper = new Swiper('.mySwiper', {
+       
+      const chatHeader = document.getElementById('chat-header');
+    const chatBody = document.getElementById('chat-body');
+    const messagesContainer = document.getElementById('messages');
+    const chatInput = document.getElementById('chat-input');
+    const chatSend = document.getElementById('chat-send');
+
+    // فتح/غلق الشات
+    chatHeader.addEventListener('click', () => {
+        chatBody.style.display = chatBody.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    // إرسال الرسالة
+    chatSend.addEventListener('click', () => {
+        sendMessage(chatInput.value);
+    });
+
+    chatInput.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter') sendMessage(chatInput.value);
+    });
+
+    function addMessage(text, fromUser = true) {
+        const msg = document.createElement('div');
+        msg.style.marginBottom = '8px';
+        msg.style.textAlign = fromUser ? 'right' : 'left';
+        msg.innerHTML = `<span style="display:inline-block; padding:8px 12px; border-radius:15px; background:${fromUser ? '#3b82f6' : '#e5e7eb'}; color:${fromUser ? 'white' : 'black'};">${text}</span>`;
+        messagesContainer.appendChild(msg);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    async function sendMessage(text) {
+        if(!text) return;
+        addMessage(text, true);
+        chatInput.value = '';
+
+        // استدعاء Route الصحيح
+        try {
+            const response = await fetch('/citizen/gemini-chat', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json', 'X-CSRF-TOKEN':'{{ csrf_token() }}'},
+                body: JSON.stringify({ message: text })
+            });
+            const data = await response.json();
+            addMessage(data.reply, false);
+        } catch (err) {
+            addMessage('حدث خطأ أثناء التواصل مع البوت.', false);
+        }
+    }
+       
+       const swiper = new Swiper('.mySwiper', {
             slidesPerView: 1,
             spaceBetween: 20,
             loop: false,
@@ -173,4 +221,5 @@
             },
         });
     </script>
+    
 </x-app-layout>
