@@ -1,0 +1,158 @@
+<x-app-layout>
+    <link rel="stylesheet" href="{{ Vite::asset('resources/css/tabels.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="{{ Vite::asset('resources/js/shared.js') }}"></script>
+
+    <div class="container mt-5 px-4">
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show rounded shadow-sm" role="alert">
+                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <h5 class="mb-0 fw-bold">الرخص التجارية</h5>
+            </div>
+
+            <div class="card-body p-4">
+                {{-- Filters --}}
+                <form method="GET" action="{{ route('employee.trades.index') }}" id="filtersForm"
+                    class="d-flex flex-wrap align-items-center gap-3 mb-4">
+
+                    <div class="filter-group">
+                        <label for="userFilter" class="fw-semibold mb-0">المستخدم:</label>
+                        <input type="text" name="user_name" id="userFilter" class="form-control filter-input"
+                            value="{{ request('user_name') }}" placeholder="بحث بالاسم">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="statusFilter" class="fw-semibold mb-0">الحالة:</label>
+                        <select name="status" id="statusFilter" class="form-select filter-select">
+                            <option value="">الكل</option>
+                            @foreach (['سارية', 'منتهية'] as $status)
+                                <option value="{{ $status }}"
+                                    {{ request('status') == $status ? 'selected' : '' }}>
+                                    {{ $status }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </form>
+
+                <script>
+                    $('#statusFilter, #userFilter').on('change keyup', function() {
+                        $('#filtersForm').submit();
+                    });
+                </script>
+
+                {{-- Table --}}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light text-uppercase small">
+                            <tr>
+                                <th>اسم المستخدم</th>
+                                <th>اسم الرخصة</th>
+                                <th>منذ</th>
+                                <th>تاريخ الإصدار</th>
+                                <th>تاريخ الانتهاء</th>
+                                <th>آخر دفعة</th>
+                                <th>الحالة</th>
+                                <th>الرسوم</th>
+                                <th>المدفوع</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($trades as $trade)
+                                <tr class="align-middle">
+                                    <td>{{ $trade->user->name }}</td>
+                                    <td class="fw-semibold">{{ $trade->trade_name }}</td>
+                                    <td>{{ $trade->opened_since->format('Y/m/d') }}</td>
+                                    <td>{{ $trade->issue_date->format('Y/m/d') }}</td>
+                                    <td>{{ $trade->expiry_date ? $trade->expiry_date->format('Y/m/d') : '-' }}</td>
+                                    <td>{{ $trade->last_payment->format('Y/m/d') }}</td>
+                                    
+
+                                    <td class="status-column">
+                                        <span class="badge" data-status="{{ $trade->status }}">
+                                            {{ $trade->status }}
+                                        </span>
+                                   
+                                    </td>
+                                    <td>{{ number_format($trade->fees, 2) }}</td>
+                                    <td>{{ number_format($trade->paid_fees, 2) }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-gradient" data-bs-toggle="modal"
+                                            data-bs-target="#tradeModal" data-id="{{ $trade->id }}"
+                                            data-status="{{ $trade->status }}" data-paid="{{ $trade->paid_fees }}">
+                                            <i class="fas fa-edit"></i> تعديل
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-center">{{ $trades->links() }}</div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal تعديل الرخصة --}}
+    <div class="modal fade" id="tradeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="tradeForm" method="POST" action="">
+                @csrf
+                @method('PUT')
+                <div class="modal-content rounded-4 shadow-lg border-0">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title fw-bold" id="tradeModalTitle">تعديل الرخصة</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tradeStatus" class="form-label fw-semibold">الحالة:</label>
+                            <select name="status" id="tradeStatus" class="form-select">
+                                <option value="سارية">سارية</option>
+                                <option value="منتهية">منتهية</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="paidFees" class="form-label fw-semibold">المدفوع:</label>
+                            <input type="number" step="0.01" min="0" name="paid_fees" id="paidFees"
+                                class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                        <button type="submit" class="btn btn-gradient">حفظ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</x-app-layout>
+
+<script>
+    const tradeModal = document.getElementById('tradeModal');
+    tradeModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const status = button.getAttribute('data-status');
+        const paid = button.getAttribute('data-paid');
+
+        const form = document.getElementById('tradeForm');
+        form.action = `/employee/trades/${id}`;
+
+        document.getElementById('tradeStatus').value = status;
+        document.getElementById('paidFees').value = paid;
+    });
+</script>

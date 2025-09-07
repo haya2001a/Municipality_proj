@@ -113,13 +113,13 @@
     color: #333 !important;
 }
 
-.badge[data-status="مرفوض"] {
+.badge[data-status="مرفوض"] ,.badge[data-status="منتهية"]{
     font-size: 12px !important;
     background-color: #da6864 !important;
     color: #333 !important;
 }
 
-.badge[data-status="مكتمل"] {
+.badge[data-status="مكتمل"],.badge[data-status="سارية"]  {
     font-size: 12px !important;
     background-color: #71b771d2 !important;
     color: #333 !important;
@@ -135,9 +135,9 @@ td {
     font-size: 14px !important;
 }
 
-.badge {
-    width: 35%;
-}
+/* .badge {
+    width: 40%;
+} */
 
 .filter-group {
     display: flex;

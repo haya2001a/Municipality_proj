@@ -11,7 +11,14 @@ class Trade extends Model
     use HasFactory;
     protected $table = 'trades';
 
-    protected $fillable = ['user_id', 'trade_name', 'opened_since', 'issue_date', 'expiry_date', 'last_payment', 'status', 'fees','paid_fees'];
+    protected $fillable = ['user_id', 'trade_name', 'opened_since', 'issue_date', 'expiry_date', 'last_payment', 'status', 'fees', 'paid_fees'];
+
+     protected $casts = [
+        'opened_since' => 'datetime',
+        'issue_date' => 'datetime',
+        'expiry_date' => 'datetime',
+        'last_payment' => 'datetime',
+    ];
 
     public static function calculateFees($lastPayment)
     {

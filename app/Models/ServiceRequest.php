@@ -42,4 +42,8 @@ class ServiceRequest extends Model
     {
         return $this->belongsTo(Department::class);
     }
+    public function attachments()
+    {
+        return $this->hasMany(RequestAttachment::class, 'request_id');
+    }
 }

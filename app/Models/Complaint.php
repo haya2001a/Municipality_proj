@@ -10,6 +10,12 @@ class Complaint extends Model
     use HasFactory;
     protected $fillable = ['user_id', 'title', 'department_id', 'description', 'status', 'closed_at'];
 
+    protected $casts = [
+        'closed_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public static function rules()
     {
         return [
@@ -24,7 +30,7 @@ class Complaint extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function department()
     {
         return $this->belongsTo(Department::class);

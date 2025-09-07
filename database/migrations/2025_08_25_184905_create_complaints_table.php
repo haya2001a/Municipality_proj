@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->text('description');
+            $table->text('response');
             $table->foreignId('department_id')->nullable()->constrained('departments')->onDelete('cascade');
             $table->enum('status', [
                 'قيد الانتظار',

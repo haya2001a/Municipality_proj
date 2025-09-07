@@ -65,13 +65,13 @@
                                     </a>
                                 @elseif($user->hasRole('Employee'))
                                     <!-- Employee Sections -->
-                                    <a href="{{ route('employee.tasks') }}"
+                                    <a href="{{ route('employee.requests.index') }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Employee Tasks
+                                       طلبات خدمات المواطنين
                                     </a>
-                                    <a href="{{ route('employee.reports') }}"
+                                    <a href="{{ route('employee.complaints.index') }}"
                                         class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Reports
+                                        طلبات شكاوي المواطنين
                                     </a>
                                 @else
                                     <!-- Citizen Sections -->

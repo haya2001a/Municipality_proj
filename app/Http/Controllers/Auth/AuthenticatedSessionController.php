@@ -28,19 +28,19 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-$user = $request->user();
+        $user = $request->user();
 
-    // إعادة توجيه حسب الدور
-    if ($user->hasRole('admin')) {
-        return redirect()->route('admin.dashboard');
-    } elseif ($user->hasRole('employee')) {
-        return redirect()->route('employee.dashboard');
-    } elseif ($user->hasRole('citizen')) {
-        return redirect()->route('citizen.dashboard');
-    }
+        // إعادة توجيه حسب الدور
+        if ($user->hasRole('admin')) {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->hasRole('employee')) {
+            return redirect()->route('employee.dashboard');
+        } elseif ($user->hasRole('citizen')) {
+            return redirect()->route('citizen.dashboard');
+        }
 
-    // fallback
-    return redirect(RouteServiceProvider::HOME);
+        // fallback
+        return redirect(RouteServiceProvider::HOME);
     }
 
     /**

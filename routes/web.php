@@ -54,8 +54,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
 });
 
 // Employee Dashboard
-Route::middleware(['auth', 'role:employee'])->group(function () {
-    Route::get('/employee/dashboard', [EmployeeController::class, 'index'])->name('employee.dashboard');
+Route::prefix('employee')->name('employee.')->middleware(['auth', 'role:employee'])->group(function () {
+    Route::get('/dashboard', [EmployeeController::class, 'index'])->name('dashboard');
+    Route::get('/requests', [\App\Http\Controllers\EmployeeControllers\RequestsController::class, 'index'])->name('requests.index');
+    Route::get('/complaints', [\App\Http\Controllers\EmployeeControllers\ComplaintsController::class, 'index'])->name('complaints.index');
+    Route::put('/complaints/{complaint}', [\App\Http\Controllers\EmployeeControllers\ComplaintsController::class, 'update'])->name('complaints.update');
+    Route::get('/trades', [\App\Http\Controllers\EmployeeControllers\TradeController::class, 'index'])->name('trades.index');
+    Route::get('/trades/{id}', [\App\Http\Controllers\EmployeeControllers\TradeController::class, 'show'])->name('trades.show');
+
+    Route::put('/requests/{id}/status', [\App\Http\Controllers\EmployeeControllers\RequestsController::class, 'updateStatus'])->name('requests.updateStatus');
+
+
 });
 
 // Citizen Dashboard
