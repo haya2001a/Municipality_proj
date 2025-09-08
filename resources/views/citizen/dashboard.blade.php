@@ -94,19 +94,37 @@
                 <div class="swiper-button-prev"></div>
             </div>
 <!-- Chatbot Container -->
-<div id="gemini-chatbot" style="position:fixed; bottom:20px; right:20px; width:350px; max-width:90%; background:white; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.2); overflow:hidden; display:flex; flex-direction:column; z-index:9999; font-family:sans-serif;">
-    <div id="chat-header" style="  background: var(--primary-color); color: white;border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer;box-shadow: var(--shadow);">
+<div id="gemini-chatbot" 
+     style="position:fixed; bottom:20px; right:20px; z-index:9999; font-family:sans-serif;">
+
+    <!-- الأيقونة -->
+    <div id="chat-header" 
+         style="background: var(--primary-color); color: white;border-radius: 50%; 
+                width: 60px; height: 60px; display: flex; align-items: center; 
+                justify-content: center; font-size: 1.5rem; cursor: pointer;
+                box-shadow: var(--shadow);">
         💬
     </div>
-    <div id="chat-body" style="flex:1; padding:10px; display:none; flex-direction:column; overflow-y:auto; max-height:400px;">
-        <div id="messages" style="flex:1; overflow-y:auto; margin-bottom:10px;"></div>
-        <div style="display:flex; gap:5px;">
-            <input type="text" id="chat-input" placeholder="اكتب رسالتك..." style="flex:1; padding:8px; border-radius:10px; border:1px solid #ccc;">
-            <button id="chat-send" style="padding:8px 12px; border:none; background:#3b82f6; color:white; border-radius:10px; cursor:pointer;">إرسال</button>
+
+    <!-- البودي (مخفي بالاول) -->
+    <div id="chat-body" 
+         style="display:none; margin-top:10px; width:350px; max-width:90%; background:white; 
+                border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.2); 
+                flex-direction:column; overflow:hidden; max-height:400px;">
+
+        <div id="messages" style="flex:1; overflow-y:auto; margin:10px;"></div>
+
+        <div style="display:flex; gap:5px; padding:10px;">
+            <input type="text" id="chat-input" placeholder="اكتب رسالتك..." 
+                   style="flex:1; padding:8px; border-radius:10px; border:1px solid #ccc;">
+            <button id="chat-send" 
+                    style="padding:8px 12px; border:none; background:#3b82f6; 
+                           color:white; border-radius:10px; cursor:pointer;">
+                إرسال
+            </button>
         </div>
     </div>
 </div>
-
         </div>
     </div>
 
