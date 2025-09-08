@@ -76,16 +76,16 @@
                                     <td>{{ $trade->issue_date->format('Y/m/d') }}</td>
                                     <td>{{ $trade->expiry_date ? $trade->expiry_date->format('Y/m/d') : '-' }}</td>
                                     <td>{{ $trade->last_payment->format('Y/m/d') }}</td>
-                                    
+
 
                                     <td class="status-column">
                                         <span class="badge" data-status="{{ $trade->status }}">
                                             {{ $trade->status }}
                                         </span>
-                                   
+
                                     </td>
-                                    <td>{{ number_format($trade->fees, 2) }}</td>
-                                    <td>{{ number_format($trade->paid_fees, 2) }}</td>
+                                    <td>{{ number_format($trade->fees, 2) }} د.أ</td>
+                                    <td>{{ number_format($trade->paid_fees, 2) }} د.أ</td>
                                     <td>
                                         <button class="btn btn-sm btn-gradient" data-bs-toggle="modal"
                                             data-bs-target="#tradeModal" data-id="{{ $trade->id }}"
@@ -104,55 +104,21 @@
         </div>
     </div>
 
-    {{-- Modal تعديل الرخصة --}}
-    <div class="modal fade" id="tradeModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="tradeForm" method="POST" action="">
-                @csrf
-                @method('PUT')
-                <div class="modal-content rounded-4 shadow-lg border-0">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title fw-bold" id="tradeModalTitle">تعديل الرخصة</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="tradeStatus" class="form-label fw-semibold">الحالة:</label>
-                            <select name="status" id="tradeStatus" class="form-select">
-                                <option value="سارية">سارية</option>
-                                <option value="منتهية">منتهية</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="paidFees" class="form-label fw-semibold">المدفوع:</label>
-                            <input type="number" step="0.01" min="0" name="paid_fees" id="paidFees"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <div class="modal-footer border-0">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
-                        <button type="submit" class="btn btn-gradient">حفظ</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+ 
+@include('employee.updateTradeModal')
 
 </x-app-layout>
 
 <script>
-    const tradeModal = document.getElementById('tradeModal');
-    tradeModal.addEventListener('show.bs.modal', function(event) {
-        const button = event.relatedTarget;
-        const id = button.getAttribute('data-id');
-        const status = button.getAttribute('data-status');
-        const paid = button.getAttribute('data-paid');
+    $('#tradeModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var status = button.data('status');
+        var paid = button.data('paid');
 
-        const form = document.getElementById('tradeForm');
-        form.action = `/employee/trades/${id}`;
+        var form = $('#tradeForm');
+        form.attr('action', '/employee/trades/' + id);
 
-        document.getElementById('tradeStatus').value = status;
-        document.getElementById('paidFees').value = paid;
+        $('#tradeStatus').val(status);;
     });
 </script>

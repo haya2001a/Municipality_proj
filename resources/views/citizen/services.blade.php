@@ -99,7 +99,6 @@
     @include('citizen.addRequestModal')
 
     <style>
-        /* تحسينات بسيطة للانيميشن */
         .service-card {
             transition: transform 0.2s ease;
         }
@@ -112,15 +111,12 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
-        /* تحسين شريط البحث */
         #serviceSearch:focus {
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
     </style>
 
     <script>
-        // تحسين وظيفة البحث
         document.getElementById('serviceSearch').addEventListener('keyup', function() {
             const value = this.value.toLowerCase().trim();
             const cards = document.querySelectorAll('.service-card');
@@ -133,7 +129,6 @@
                 if (isVisible) visibleCards++;
             });
 
-            // عرض رسالة عدم وجود نتائج
             if (visibleCards === 0 && value !== '') {
                 noResults.classList.remove('hidden');
             } else {
@@ -141,14 +136,12 @@
             }
         });
 
-        // إضافة تأثير تحميل بسيط للأزرار
         document.querySelectorAll('.request-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const originalText = this.innerHTML;
                 this.innerHTML = '<span class="flex items-center justify-center"><span class="animate-spin ml-2">⏳</span>جاري المعالجة...</span>';
                 this.disabled = true;
-                
-                // استعادة النص الأصلي بعد ثانيتين (يمكن تعديل هذا حسب الحاجة)
+
                 setTimeout(() => {
                     this.innerHTML = originalText;
                     this.disabled = false;

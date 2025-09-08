@@ -68,7 +68,6 @@
                     });
                 </script>
 
-                {{-- Table --}}
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light text-uppercase small">

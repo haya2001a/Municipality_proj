@@ -61,7 +61,9 @@ class RequestsController extends Controller
         $this->updateUserAccount($requestModel, $oldStatus, $newStatus);
 
         $user = $requestModel->user;
-        $user->notify(new RequestStatusChanged($requestModel, $newStatus));
+        $service = $requestModel->service;
+
+        $user->notify(new RequestStatusChanged($service, $oldStatus, $newStatus));
 
         return back()->with('success', 'تم تحديث الحالة بنجاح');
     }
@@ -90,14 +92,7 @@ class RequestsController extends Controller
             $account->increment('total_paid', $price);
         }
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
+  
     /**
      * Store a newly created resource in storage.
      */
@@ -138,38 +133,6 @@ class RequestsController extends Controller
         }
 
         return redirect()->route('citizen.requests.index')->with('success', "تم إضافة طلب الخدمة بنجاح");
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 
     public function getEmployees($id)

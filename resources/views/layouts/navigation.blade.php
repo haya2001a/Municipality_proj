@@ -12,81 +12,63 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-4 sm:-my-px sm:ms-10 sm:flex items-center">
-                    <!-- Dashboard Link based on Role -->
-                    @php
-                        $user = Auth::user();
-                    @endphp
+                    @php $user = Auth::user(); @endphp
 
                     @if ($user->hasRole('admin'))
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                            {{ __('لوحة التحكم') }}
-                        </x-nav-link>
+                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">{{ __('لوحة التحكم') }}</x-nav-link>
                     @elseif ($user->hasRole('employee'))
-                        <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">
-                            {{ __('لوحة التحكم') }}
-                        </x-nav-link>
+                        <x-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('employee.dashboard')">{{ __('لوحة التحكم') }}</x-nav-link>
                     @else
-                        <x-nav-link :href="route('citizen.dashboard')" :active="request()->routeIs('citizen.dashboard')">
-                            {{ __('لوحة التحكم') }}
-                        </x-nav-link>
+                        <x-nav-link :href="route('citizen.dashboard')" :active="request()->routeIs('citizen.dashboard')">{{ __('لوحة التحكم') }}</x-nav-link>
                     @endif
 
-
-                    <!-- Dropdown Sections based on Role -->
-                    <div x-data="{ openSection: false }" class="relative">
-                        <button @click="openSection = !openSection"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white hover:text-gray-700 rounded-md">
-                            الأقسام
-                            <svg class="mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
+                    <!-- Notifications Dropdown -->
+                    @if ($user->hasRole('citizen'))
+  <div x-data="notifications()" class="relative">
+                        <button @click="openNotifications = !openNotifications; if(openNotifications) markAllAsRead()"
+                            class="relative inline-flex items-center px-3 py-2 text-sm font-medium text-gray-500 bg-white hover:text-gray-700 rounded-full focus:outline-none transition duration-200">
+                            <!-- Bell Icon -->
+                            <svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
+
+                            <!-- Badge -->
+                            <span x-show="unreadCount > 0" x-text="unreadCount"
+                                class="absolute top-0 right-0 -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5"></span>
                         </button>
 
-                        <!-- Dropdown menu -->
-                        <div x-show="openSection" @click.away="openSection = false"
-                            class="absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 right-0">
-                            <div class="py-1 text-right">
-                                @if ($user->hasRole('admin'))
-                                    <!-- Admin Sections -->
-                                    <a href="{{ route('admin.users.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        إدارة المستخدمين
-                                    </a>
-                                  
-                                    <a href="{{ route('admin.services.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        إدارة مجموعات الخدمات
-                                    </a>
-                                    <a href="{{ route('admin.requests.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        إدارة الطلبات
-                                    </a>
-                                @elseif($user->hasRole('Employee'))
-                                    <!-- Employee Sections -->
-                                    <a href="{{ route('employee.requests.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                       طلبات خدمات المواطنين
-                                    </a>
-                                    <a href="{{ route('employee.complaints.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        طلبات شكاوي المواطنين
-                                    </a>
-                                @else
-                                    <!-- Citizen Sections -->
-                                    <a href="{{ route('citizen.requests.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        طلبات الخدمة
-                                    </a>
-                                    <a href="{{ route('citizen.complaints.index') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        الشكاوي
-                                    </a>
-                                @endif
+                        <div x-show="openNotifications" x-cloak @click.away="openNotifications = false"
+                            class="absolute mt-2 w-80 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 right-0 transition ease-out duration-200">
+
+                            <!-- Header -->
+                            <div class="px-4 py-2 border-b border-gray-200 text-gray-800 font-semibold text-sm">
+                                الإشعارات
+                            </div>
+
+                            <!-- Notifications -->
+                            <div class="max-h-96 overflow-y-auto divide-y divide-gray-200">
+                                <template x-for="notification in notifications" :key="notification.id">
+                                    <div
+                                        class="px-4 py-3 hover:bg-gray-50 cursor-pointer transition flex justify-between items-center">
+                                        <p class="text-sm text-gray-700" x-text="notification.message"></p>
+                                        <span x-show="!notification.read"
+                                            class="bg-blue-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">جديد</span>
+                                    </div>
+                                </template>
+                                <template x-if="notifications.length === 0">
+                                    <div class="px-4 py-3 text-sm text-gray-500">لا توجد إشعارات جديدة</div>
+                                </template>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="px-4 py-2 border-t border-gray-200 text-center">
+                                <a href="{{ route('notifications.all') }}"
+                                    class="text-blue-600 hover:underline text-sm font-medium">عرض كل الإشعارات</a>
                             </div>
                         </div>
                     </div>
+                    @endif
 
                 </div>
             </div>
@@ -110,9 +92,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <!-- Profile Link -->
                         <x-dropdown-link :href="route('profile.edit')">{{ __('الملف الشخصي') }}</x-dropdown-link>
-                        <!-- Logout Form -->
                         <form method="POST" action="{{ route('logout') }}">@csrf
                             <x-dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault(); this.closest('form').submit();">
@@ -138,4 +118,41 @@
             </div>
         </div>
     </div>
+
+    <!-- Alpine + Echo -->
+  <script>
+    function notifications() {
+        return {
+            notifications: @json(auth()->user()->notifications->map(fn($n) => [
+                'id' => $n->id,
+                'message' => $n->data['message'] ?? 'بدون رسالة',
+                'read' => $n->read_at !== null
+            ])->toArray()),
+            unreadCount: {{ auth()->user()->unreadNotifications->count() }},
+            openNotifications: false,
+
+            init() {
+                Echo.private(`App.Models.User.{{ auth()->id() }}`)
+                    .notification((notification) => {
+                        this.notifications.unshift({
+                            id: notification.id,
+                            message: notification.data.message ?? 'بدون رسالة',
+                            read: false
+                        });
+                        this.unreadCount++;
+                    });
+            },
+
+            markAllAsRead() {
+                this.unreadCount = 0;
+                this.notifications.forEach(notification => {
+                    if (!notification.read) {
+                        notification.read = true;
+                        axios.post(`/notifications/${notification.id}/read`);
+                    }
+                });
+            }
+        }
+    }
+</script>
 </nav>

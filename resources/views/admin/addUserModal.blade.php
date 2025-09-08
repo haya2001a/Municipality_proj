@@ -5,7 +5,7 @@
             <div class="modal-content rounded-4 shadow-lg border-0">
                 <div class="modal-header border-0 d-flex justify-content-between">
                     <h5 class="modal-title fw-bold">إضافة مستخدم جديد</h5>
-                  
+
                 </div>
 
                 <div class="modal-body">
@@ -14,28 +14,36 @@
                             <label class="form-label">الاسم</label>
                             <input type="text" name="name"
                                 class="form-control bg-light @error('name') is-invalid @enderror" required>
-                            @error('name') <div class="text-danger small">{{ $message }}</div> @enderror
+                            @error('name')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">رقم الهوية</label>
                             <input type="text" name="national_id"
                                 class="form-control bg-light @error('national_id') is-invalid @enderror" required>
-                            @error('national_id') <div class="text-danger small">{{ $message }}</div> @enderror
+                            @error('national_id')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">البريد الإلكتروني</label>
                             <input type="email" name="email"
                                 class="form-control bg-light @error('email') is-invalid @enderror" required>
-                            @error('email') <div class="text-danger small">{{ $message }}</div> @enderror
+                            @error('email')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">الهاتف</label>
                             <input type="text" name="phone"
                                 class="form-control bg-light @error('phone') is-invalid @enderror">
-                            @error('phone') <div class="text-danger small">{{ $message }}</div> @enderror
+                            @error('phone')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-6">
@@ -45,23 +53,31 @@
                                 <option value="ذكر">ذكر</option>
                                 <option value="أنثى">أنثى</option>
                             </select>
-                            @error('gender') <div class="text-danger small">{{ $message }}</div> @enderror
+                            @error('gender')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">الدور</label>
-                            <select name="role_id" class="form-select bg-light @error('role_id') is-invalid @enderror" required id="roleSelect">
+                            <select name="role_id" class="form-select bg-light @error('role_id') is-invalid @enderror"
+                                required id="roleSelect">
                             </select>
-                            @error('role_id') <div class="text-danger small">{{ $message }}</div> @enderror
+                            @error('role_id')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-6" id="departmentWrapper" style="display:none;">
                             <label class="form-label">القسم</label>
                             <select name="department_id"
-                                class="form-select bg-light @error('department_id') is-invalid @enderror" id="departmentSelect">
+                                class="form-select bg-light @error('department_id') is-invalid @enderror"
+                                id="departmentSelect">
                                 <option value="">اختر القسم</option>
                             </select>
-                            @error('department_id') <div class="text-danger small">{{ $message }}</div> @enderror
+                            @error('department_id')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="col-md-6">
@@ -110,13 +126,16 @@
                         <div class="col-md-12">
                             <label class="form-label">ملاحظات</label>
                             <textarea name="notes" rows="3" class="form-control bg-light @error('notes') is-invalid @enderror"></textarea>
-                            @error('notes') <div class="text-danger small">{{ $message }}</div> @enderror
+                            @error('notes')
+                                <div class="text-danger small">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-secondary px-4 rounded-pill"
+                        data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-modern px-4 rounded-pill">إضافة</button>
                 </div>
             </div>
@@ -152,7 +171,7 @@
         opacity: 0.9;
     }
 
-    .form-control.bg-light, 
+    .form-control.bg-light,
     .form-select.bg-light {
         border-radius: 0.5rem;
     }

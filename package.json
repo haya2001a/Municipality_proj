@@ -17,6 +17,8 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
-        "filepond": "^4.32.8"
+        "filepond": "^4.32.8",
+        "laravel-echo": "^2.2.0",
+        "pusher-js": "^8.4.0"
     }
 }

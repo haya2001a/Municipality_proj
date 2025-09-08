@@ -71,7 +71,6 @@
                     });
                 </script>
 
-                {{-- Table --}}
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light text-uppercase small">
@@ -181,6 +180,7 @@
 
     @include('employee.attachmentModal')
     <script>
+
         function showAttachments(files) {
             const container = document.getElementById('attachmentsContainer');
             const noMsg = document.getElementById('noAttachmentsMessage');
@@ -213,7 +213,6 @@
             });
         }
 
-        // مثال على استدعاء المودال عند الضغط على الزر
         document.querySelectorAll('.view-attachments-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const files = JSON.parse(this.dataset.attachments);
@@ -257,14 +256,12 @@
                 name.textContent = file.original_name || file.file_name;
                 item.appendChild(name);
 
-                // فتح الملف عند الضغط على أي عنصر
                 item.addEventListener('click', () => {
                     window.open(`/storage/service_requests/${file.request_id}/${file.file_name}`, '_blank');
                 });
 
                 container.appendChild(item);
 
-                // فاصل بين العناصر إلا آخر عنصر
                 if (index < files.length - 1) {
                     const divider = document.createElement('hr');
                     divider.className = 'attachment-divider';

@@ -28,27 +28,26 @@
                 {{-- Filters --}}
                 <form method="GET" action="{{ route('citizen.complaints.index') }}" id="filtersForm"
                     class="d-flex flex-wrap align-items-center gap-3 mb-4">
-
-                    {{-- فلتر الحالة --}}
                     <div class="filter-group">
                         <label for="statusFilter" class="fw-semibold mb-0">الحالة:</label>
                         <select name="status" id="statusFilter" class="form-select filter-select">
                             <option value="">الكل</option>
                             @foreach (['قيد الانتظار', 'مرفوض', 'مكتمل'] as $status)
-                                <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
+                                <option value="{{ $status }}"
+                                    {{ request('status') == $status ? 'selected' : '' }}>
                                     {{ $status }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
-                    {{-- فلتر القسم --}}
                     <div class="filter-group">
                         <label for="departmentFilter" class="fw-semibold mb-0">القسم:</label>
                         <select name="department_id" id="departmentFilter" class="form-select filter-select">
                             <option value="">الكل</option>
                             @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
+                                <option value="{{ $department->id }}"
+                                    {{ request('department_id') == $department->id ? 'selected' : '' }}>
                                     {{ $department->name }}
                                 </option>
                             @endforeach
@@ -58,12 +57,11 @@
                 </form>
 
                 <script>
-                    $('#statusFilter, #departmentFilter').on('change keyup', function () {
+                    $('#statusFilter, #departmentFilter').on('change keyup', function() {
                         $('#filtersForm').submit();
                     });
                 </script>
 
-                {{-- Table --}}
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light text-uppercase small">
@@ -81,7 +79,7 @@
                                 <tr class="align-middle">
                                     <td class="fw-semibold">{{ $complaint->title }}</td>
                                     <td>{{ Str::limit($complaint->description, 50) }}</td>
-                                    <td>{{ $complaint->department->name}}</td>
+                                    <td>{{ $complaint->department->name }}</td>
                                     <td class="status-column">
                                         <span class="badge" data-status="{{ $complaint->status }}">
                                             {{ $complaint->status }}
@@ -104,8 +102,8 @@
     @include('citizen.addComplaintModal')
 
     <script>
-        $(function () {
-            $('#openAddComplaintModal').click(function () {
+        $(function() {
+            $('#openAddComplaintModal').click(function() {
                 $('#addComplaintModal').modal('show');
             });
         });

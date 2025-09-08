@@ -41,7 +41,6 @@
 </div>
 
 <script>
-   
     FilePond.setOptions({
         storeAsFile: true
     });

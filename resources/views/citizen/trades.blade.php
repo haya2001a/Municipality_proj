@@ -1,5 +1,5 @@
 <x-app-layout>
-@vite(['resources/css/citizenTrades.css'])
+    @vite(['resources/css/citizenTrades.css'])
 
     <div class="container py-5">
         <div class="row justify-content-center">
@@ -37,7 +37,6 @@
                                 </div>
                             </div>
 
-                            <!-- التواريخ -->
                             <div class="col-md-6">
                                 <div class="info-item">
                                     <div class="info-icon">
@@ -89,9 +88,8 @@
                     </div>
                 </div>
 
-                <!-- بطاقة المعلومات المالية -->
-                <div class="row g-3 mb-4">
-                    <div class="col-md-4">
+                <div class="row g-3 mb-6">
+                    <div class="col-md-6">
                         <div class="financial-card fees-card">
                             <div class="financial-icon">
                                 <i class="fas fa-money-bill-wave"></i>
@@ -104,7 +102,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="financial-card paid-card">
                             <div class="financial-icon">
                                 <i class="fas fa-check-circle"></i>
@@ -112,20 +110,6 @@
                             <div class="financial-content">
                                 <h6 class="financial-label">المبلغ المدفوع</h6>
                                 <div class="financial-value">{{ number_format($trade->paid_fees, 2) }}</div>
-                                <small class="currency">دينار أردني</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="financial-card remaining-card">
-                            <div class="financial-icon">
-                                <i class="fas fa-exclamation-circle"></i>
-                            </div>
-                            <div class="financial-content">
-                                <h6 class="financial-label">المتبقي</h6>
-                                <div class="financial-value">{{ number_format($trade->fees - $trade->paid_fees, 2) }}
-                                </div>
                                 <small class="currency">دينار أردني</small>
                             </div>
                         </div>

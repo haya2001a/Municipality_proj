@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AdminControllers\AdminController;
 use App\Http\Controllers\AdminControllers\DepartmentsController;
-use App\Http\Controllers\AdminControllers\PermissionsController;
 use App\Http\Controllers\AdminControllers\RequestsController;
 use App\Http\Controllers\AdminControllers\RolesController;
 use App\Http\Controllers\AdminControllers\ServicesController;
@@ -26,12 +25,13 @@ use App\Http\Controllers\CitizenControllers\ChatBotController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware('auth')->group(function () {
+    Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.all');
+    Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead']);
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -61,10 +61,8 @@ Route::prefix('employee')->name('employee.')->middleware(['auth', 'role:employee
     Route::put('/complaints/{complaint}', [\App\Http\Controllers\EmployeeControllers\ComplaintsController::class, 'update'])->name('complaints.update');
     Route::get('/trades', [\App\Http\Controllers\EmployeeControllers\TradeController::class, 'index'])->name('trades.index');
     Route::get('/trades/{id}', [\App\Http\Controllers\EmployeeControllers\TradeController::class, 'show'])->name('trades.show');
-
+    Route::put('/trades/{id}', [\App\Http\Controllers\EmployeeControllers\TradeController::class, 'update'])->name('trades.update');
     Route::put('/requests/{id}/status', [\App\Http\Controllers\EmployeeControllers\RequestsController::class, 'updateStatus'])->name('requests.updateStatus');
-
-
 });
 
 // Citizen Dashboard
@@ -75,7 +73,7 @@ Route::prefix('citizen')->name('citizen.')->middleware(['auth', 'role:citizen'])
     Route::resource('requests', \App\Http\Controllers\CitizenControllers\RequestsController::class);
     Route::resource('complaints', ComplaintsController::class);
     Route::get('trades/{id}', [TradeController::class, 'show'])->name('trades.show');
-Route::post('/gemini-chat', [ChatBotController::class, 'chat'])->name('gemini-chat');
+    Route::post('/gemini-chat', [ChatBotController::class, 'chat'])->name('gemini-chat');
 });
 
 require __DIR__ . '/auth.php';

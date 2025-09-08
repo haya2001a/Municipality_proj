@@ -70,8 +70,9 @@
                     <form method="GET" action="{{ route('admin.services.index') }}" id="nameFilterForm"
                         class="d-flex align-items-center gap-2 mb-0">
                         <label for="nameFilter" class="fw-semibold mb-0">الخدمة:</label>
-                        <input type="text" name="name" id="nameFilter" class="form-control form-control-sm rounded-pill"
-                            placeholder="ابحث باسم الخدمة" value="{{ request('name') }}">
+                        <input type="text" name="name" id="nameFilter"
+                            class="form-control form-control-sm rounded-pill" placeholder="ابحث باسم الخدمة"
+                            value="{{ request('name') }}">
                     </form>
                 </div>
 
@@ -107,13 +108,13 @@
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-outline-primary editUserBtn"
                                             data-id="{{ $service->id }}" title="تعديل">
-                                            <i class="fas fa-edit me-1"></i> 
+                                            <i class="fas fa-edit me-1"></i>
                                         </button>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal"
+                                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
                                             data-action="{{ route('admin.services.destroy', $service->id) }}"
                                             data-message="هل أنت متأكد أنك تريد حذف الخدمة {{ $service->name }}؟">
-                                            <i class="fas fa-trash-alt me-1"></i> 
+                                            <i class="fas fa-trash-alt me-1"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -143,8 +144,10 @@
                     $('#editServiceForm').attr('action', '/admin/services/' + serviceId);
                     $('#editServiceForm [name="name"]').val(data.name);
                     $('#editServiceForm [name="price"]').val(data.price);
-                    $('#editServiceForm [name="processing_time_min"]').val(data.processing_time_min);
-                    $('#editServiceForm [name="processing_time_max"]').val(data.processing_time_max);
+                    $('#editServiceForm [name="processing_time_min"]').val(data
+                    .processing_time_min);
+                    $('#editServiceForm [name="processing_time_max"]').val(data
+                    .processing_time_max);
                     $('#editServiceForm [name="status"]').val(data.status);
                     $('#editServiceForm [name="department_id"]').val(data.department_id);
 
@@ -169,9 +172,15 @@
             });
         });
 
-        $('#statusFilter').on('change', function() { $('#statusFilterForm').submit(); });
-        $('#departmentFilter').on('change', function() { $('#departmentFilterForm').submit(); });
-        $('#priorityFilter').on('change', function() { $('#priorityFilterForm').submit(); });
+        $('#statusFilter').on('change', function() {
+            $('#statusFilterForm').submit();
+        });
+        $('#departmentFilter').on('change', function() {
+            $('#departmentFilterForm').submit();
+        });
+        $('#priorityFilter').on('change', function() {
+            $('#priorityFilterForm').submit();
+        });
     </script>
 
     <style>
@@ -180,10 +189,13 @@
             color: #fff;
             border: none;
         }
+
         .btn-modern:hover {
             opacity: 0.9;
         }
-        .form-select.rounded-pill, .form-control.rounded-pill {
+
+        .form-select.rounded-pill,
+        .form-control.rounded-pill {
             border-radius: 50px !important;
         }
     </style>

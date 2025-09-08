@@ -4,8 +4,8 @@ namespace App\Http\Controllers\EmployeeControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Complaint;
+use App\Notifications\ComplaintStatusChanged;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ComplaintsController extends Controller
 {
@@ -51,17 +51,9 @@ class ComplaintsController extends Controller
 
         $complaint->save();
 
+        $user = $complaint->user;
+        $user->notify(new ComplaintStatusChanged($request->response, $request->status, $complaint->title));
+
         return redirect()->route('employee.complaints.index')->with('success', 'تم تعديل الشكوى بنجاح');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $complaint = Complaint::where('user_id', auth()->id())->findOrFail($id);
-        $complaint->delete();
-
-        return redirect()->route('citizen.complaints.index')->with('success', 'تم حذف الشكوى بنجاح');
     }
 }

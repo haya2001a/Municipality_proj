@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ServicesController extends Controller
 {
-    /**
-     * عرض قائمة الخدمات مع إمكانية الفلترة
-     */
     public function index(Request $request)
     {
         $departmentFilter = $request->input('department');
@@ -29,7 +26,7 @@ class ServicesController extends Controller
         if ($nameFilter) {
             $services->where('name', 'like', "%{$nameFilter}%");
         }
-        if ($statusFilter) { // فلترة حسب الحالة
+        if ($statusFilter) { 
             $services->where('status', $statusFilter);
         }
 
@@ -37,25 +34,19 @@ class ServicesController extends Controller
             $services->where('priority', $priorityFilter);
         }
 
-        $services = $services->latest()->paginate(10);// للحفاظ على الفلاتر في pagination
+        $services = $services->latest()->paginate(10);
 
         $departments = Department::all();
 
         return view('admin.services', compact('services', 'departments'));
     }
 
-    /**
-     * عرض الفورم (مودال الإضافة موجود بنفس الصفحة عادة)
-     */
     public function create()
     {
         $departments = Department::all();
         return view('admin.services', compact('departments'));
     }
 
-    /**
-     * إضافة خدمة جديدة
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), Service::rules());
@@ -64,12 +55,11 @@ class ServicesController extends Controller
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
-                ->with('form', 'add'); // لتحديد مودال الإضافة
+                ->with('form', 'add');
         }
 
         $data = $request->all();
 
-        // تجهيز الوثائق المطلوبة
         if (!empty($data['required_documents'])) {
             $docsArray = preg_split("/\r\n|\n|\r|,/", $data['required_documents']);
             $data['required_documents'] = json_encode(array_map('trim', $docsArray));
@@ -80,19 +70,12 @@ class ServicesController extends Controller
         return redirect()->route('admin.services.index')->with('success', 'تمت إضافة الخدمة بنجاح');
     }
 
-
-    /**
-     * عرض خدمة محددة (JSON)
-     */
     public function show(string $id)
     {
         $service = Service::findOrFail($id);
         return response()->json($service);
     }
 
-    /**
-     * تعديل خدمة
-     */
     public function edit(string $id)
     {
         $service = Service::findOrFail($id);
@@ -119,9 +102,6 @@ class ServicesController extends Controller
         return redirect()->route('admin.services.index')->with('success', 'تم تعديل الخدمة بنجاح');
     }
 
-    /**
-     * حذف خدمة
-     */
     public function destroy(string $id)
     {
         $service = Service::findOrFail($id);

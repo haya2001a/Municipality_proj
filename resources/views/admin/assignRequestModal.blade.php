@@ -11,22 +11,17 @@
                     <div class="row g-3">
                         <div class="col-md-12">
                             <label for="assigned_to" class="form-label">اختر الموظف</label>
-                          
-                          
-                          
-                          
-                          
-                            <select name="assigned_to" id="assigned_to" 
-                                class="form-select bg-light" required>
-                                <option value="" disabled  hidden>اختر الموظف</option>
-                          
+                            <select name="assigned_to" id="assigned_to" class="form-select bg-light" required>
+                                <option value="" disabled hidden>اختر الموظف</option>
+
                             </select>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-secondary px-4 rounded-pill"
+                        data-bs-dismiss="modal">إلغاء</button>
                     <button type="submit" class="btn btn-modern px-4 rounded-pill">إسناد</button>
                 </div>
             </div>
@@ -45,7 +40,7 @@
         opacity: 0.9;
     }
 
-    .form-control.bg-light, 
+    .form-control.bg-light,
     .form-select.bg-light {
         border-radius: 0.5rem;
     }

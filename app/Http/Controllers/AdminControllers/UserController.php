@@ -54,9 +54,6 @@ class UserController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), User::rules());
@@ -94,7 +91,7 @@ class UserController extends Controller
                 'fees' => Trade::calculateFees($request->last_payment),
             ]);
         }
-        // Mail::to($user->email)->send(new NewUserCreatedMail($user));
+        Mail::to($user->email)->send(new NewUserCreatedMail($user));
 
         return redirect()->route('admin.users.index')->with('success', 'تمت إضافة المستخدم بنجاح');
     }

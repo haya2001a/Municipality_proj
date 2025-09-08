@@ -1,5 +1,5 @@
 <div class="modal fade" id="editServiceModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-md"> <!-- نفس حجم مودال المستخدم -->
+    <div class="modal-dialog modal-dialog-centered modal-md">
         <form id="editServiceForm" method="POST">
             @csrf
             @method('PUT')
@@ -8,7 +8,7 @@
                     <h5 class="modal-title">تعديل الخدمة</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="row g-3"> <!-- استخدام نفس grid system -->
+                    <div class="row g-3">
                         <div class="col-6">
                             <label class="form-label fw-semibold">اسم الخدمة</label>
                             <input type="text" name="name" id="editServiceName" class="form-control" required>

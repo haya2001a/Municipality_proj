@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\EmployeeControllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Complaint;
 use App\Models\Trade;
+use App\Notifications\TradeStatusChanged;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class TradeController extends Controller
 {
@@ -15,6 +14,13 @@ class TradeController extends Controller
      */
     public function index(Request $request)
     {
+        Trade::where('status', 'سارية')
+        ->where('expiry_date', '<', now())
+        ->update([
+            'status' => 'منتهية',
+            'fees' => \DB::raw('fees + 25')
+        ]);
+
         $trades = Trade::with('user');
 
         if ($request->status) {
@@ -33,10 +39,6 @@ class TradeController extends Controller
     }
 
 
-    public function store(Request $request)
-    {
-    }
-
     public function show(string $id)
     {
         $trade = Trade::with('user')->findOrFail($id);
@@ -44,49 +46,37 @@ class TradeController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Complaint $complaint)
-    {
-        $this->authorize('update', $complaint);
-        return response()->json($complaint);
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $complaint = Complaint::where('user_id', auth()->id())->findOrFail($id);
+        $validated = $request->validate([
+            'status' => 'required|string|in:سارية,منتهية',
+            'paid_fees' => 'required|numeric|min:0',
+        ]);
 
-        $validator = Validator::make($request->all(), Complaint::rules());
+        $trade = Trade::findOrFail($id);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput()
-                ->with('form', 'edit')
-                ->with('editing_complaint_id', $id);
+        $oldStatus = $trade->status;
+
+        $trade->status = $validated['status'];
+        $trade->paid_fees += $validated['paid_fees'];
+        $trade->fees -= $validated['paid_fees'];
+
+        if ($validated['paid_fees'] > 0) {
+            $trade->last_payment = now();
         }
 
-        $complaint->title = $request->title;
-        $complaint->description = $request->description;
-        $complaint->status = $request->status;
-        $complaint->closed_at = $request->status === 'مكتمل' ? now() : null;
+        if($oldStatus == 'منتهية' && $validated['status'] == 'سارية'){
+            $trade->issue_date = now();
+            $trade->expiry_date = now()->addYear();
+        }
 
-        $complaint->save();
+        $trade->save();
 
-        return redirect()->route('citizen.complaints.index')->with('success', 'تم تعديل الشكوى بنجاح');
-    }
+        $user = $trade->user;
+        $user->notify(new TradeStatusChanged($trade, $validated['paid_fees']));
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $complaint = Complaint::where('user_id', auth()->id())->findOrFail($id);
-        $complaint->delete();
-
-        return redirect()->route('citizen.complaints.index')->with('success', 'تم حذف الشكوى بنجاح');
+        return redirect()->route('employee.trades.index')->with('success', 'تم تعديل الرخصة بنجاح');
     }
 }
