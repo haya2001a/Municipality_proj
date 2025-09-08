@@ -41,7 +41,6 @@
 
                 $trade = \App\Models\Trade::where('user_id', auth()->id())->first();
                 if ($trade) {
-                if ($trade) {
                     $cards[] = [
                         'title' => 'رخصة النشاط التجاري',
                         'icon' => 'fas fa-certificate',
@@ -70,11 +69,13 @@
                     <p>الشكاوي</p>
                 </div>
                 <div class="stat-card stat-warning">
-                    <h4>{{ auth()->user()->requests()->where('status', 'مكتمل')->orWhere('status', 'مدفوع')->sum('price') }}</h4>
+                    <h4>{{ auth()->user()->requests()->where('status', 'مكتمل')->orWhere('status', 'مدفوع')->sum('price') }}
+                    </h4>
                     <p>المبلغ المطلوب</p>
                 </div>
                 <div class="stat-card stat-success">
-                    <h4>{{ auth()->user()->requests()->where('status', 'مكتمل')->sum('price') }}</h4><p>
+                    <h4>{{ auth()->user()->requests()->where('status', 'مكتمل')->sum('price') }}</h4>
+                    <p>
                     <p>المبلغ المدفوع</p>
                 </div>
             </div>
@@ -91,8 +92,6 @@
                             <div class="service-card">
                                 <div class="card-icon"
                                     style="background-color: {{ $card['color'] == 'primary' ? '#3b82f6' : ($card['color'] == 'success' ? '#10b981' : ($card['color'] == 'warning' ? '#f59e0b' : '#06b6d4')) }}">
-                                <div class="card-icon"
-                                    style="background-color: {{ $card['color'] == 'primary' ? '#3b82f6' : ($card['color'] == 'success' ? '#10b981' : ($card['color'] == 'warning' ? '#f59e0b' : '#06b6d4')) }}">
                                     <i class="{{ $card['icon'] }}"></i>
                                 </div>
                                 <h5 class="card-title">{{ $card['title'] }}</h5>
@@ -107,13 +106,15 @@
             </div>
             <div id="gemini-chatbot"
                 style="position:fixed; bottom:20px; right:20px; z-index:9999; font-family:sans-serif;">
-                <div id="chat-header" style="background: var(--primary-color); color: white;border-radius: 50%; 
+                <div id="chat-header"
+                    style="background: var(--primary-color); color: white;border-radius: 50%; 
                 width: 60px; height: 60px; display: flex; align-items: center; 
                 justify-content: center; font-size: 1.5rem; cursor: pointer;
                 box-shadow: var(--shadow);">
                     💬
                 </div>
-                <div id="chat-body" style="display:none; margin-top:10px; width:350px; max-width:90%; background:white; 
+                <div id="chat-body"
+                    style="display:none; margin-top:10px; width:350px; max-width:90%; background:white; 
                 border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.2); 
                 flex-direction:column; overflow:hidden; max-height:400px;">
 
@@ -122,7 +123,8 @@
                     <div style="display:flex; gap:5px; padding:10px;">
                         <input type="text" id="chat-input" placeholder="اكتب رسالتك..."
                             style="flex:1; padding:8px; border-radius:10px; border:1px solid #ccc;">
-                        <button id="chat-send" style="padding:8px 12px; border:none; background:#3b82f6; 
+                        <button id="chat-send"
+                            style="padding:8px 12px; border:none; background:#3b82f6; 
                            color:white; border-radius:10px; cursor:pointer;">
                             إرسال
                         </button>
@@ -134,7 +136,6 @@
 
 
     <script>
-
         const chatHeader = document.getElementById('chat-header');
         const chatBody = document.getElementById('chat-body');
         const messagesContainer = document.getElementById('messages');
@@ -157,7 +158,8 @@
             const msg = document.createElement('div');
             msg.style.marginBottom = '8px';
             msg.style.textAlign = fromUser ? 'right' : 'left';
-            msg.innerHTML = `<span style="display:inline-block; padding:8px 12px; border-radius:15px; background:${fromUser ? '#3b82f6' : '#e5e7eb'}; color:${fromUser ? 'white' : 'black'};">${text}</span>`;
+            msg.innerHTML =
+                `<span style="display:inline-block; padding:8px 12px; border-radius:15px; background:${fromUser ? '#3b82f6' : '#e5e7eb'}; color:${fromUser ? 'white' : 'black'};">${text}</span>`;
             messagesContainer.appendChild(msg);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
@@ -170,8 +172,13 @@
             try {
                 const response = await fetch('/citizen/gemini-chat', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                    body: JSON.stringify({ message: text })
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        message: text
+                    })
                 });
                 const data = await response.json();
                 addMessage(data.reply, false);
