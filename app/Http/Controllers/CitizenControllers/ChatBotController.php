@@ -14,13 +14,11 @@ class ChatBotController extends Controller
         $message = $request->input('message');
         $apiKey = config('services.gemini.api_key');
 
-        // التحقق من وجود API Key
         if (!$apiKey) {
             return response()->json(['reply' => 'مفتاح API غير موجود. يرجى التحقق من الإعدادات.']);
         }
 
-        // تعريف context الموقع
-        $context = "هذا موقع بلدية السموع، يحتوي على الصفحات التالية: الرئيسية، الخدمات، الأخبار، التواصل. أجب على أي سؤال بناءً على هذا الموقع.";
+        $context = "  هذا الموقع عبارة عن تطبيق لبلدية السموع يستخدمه كل من المواطن والموظف ، يطلب من خلاله المواطن خدمات ويقدم شكاوي ويمكنه التواصل مع البلدية من خلاله يمكنك من خلال هذا الموقع تقديم خدمة وتتبع حالتها ،تقديم شكوى ايضا بالاضافة الى تتبع حالة رخصتك التجارية اذا كان لديك سجل تجاري ";
 
         try {
             $response = Http::withHeaders([
@@ -61,13 +59,11 @@ class ChatBotController extends Controller
                 ]
             ]);
 
-            // تسجيل الاستجابة للتشخيص
             Log::info('Gemini API Response:', ['response' => $response->json()]);
 
             if ($response->successful()) {
                 $data = $response->json();
                 
-                // قراءة الرد من البنية الصحيحة لـ Gemini API
                 if (isset($data['candidates']) && 
                     count($data['candidates']) > 0 && 
                     isset($data['candidates'][0]['content']['parts'][0]['text'])) {
@@ -78,7 +74,6 @@ class ChatBotController extends Controller
                     return response()->json(['reply' => 'لم أتمكن من فهم الطلب، يرجى إعادة المحاولة.']);
                 }
             } else {
-                // تسجيل الخطأ
                 Log::error('Gemini API Error:', [
                     'status' => $response->status(),
                     'body' => $response->body()
@@ -88,7 +83,6 @@ class ChatBotController extends Controller
             }
 
         } catch (\Exception $e) {
-            // تسجيل الاستثناء
             Log::error('Gemini API Exception:', ['error' => $e->getMessage()]);
             
             return response()->json(['reply' => 'حدث خطأ غير متوقع، يرجى المحاولة لاحقاً.']);
