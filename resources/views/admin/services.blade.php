@@ -106,7 +106,7 @@
                                     <td>{{ $service->status }}</td>
                                     <td>{{ $service->priority }}</td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-primary editUserBtn"
+                                        <button class="btn btn-sm btn-outline-primary editServiceBtn"
                                             data-id="{{ $service->id }}" title="تعديل">
                                             <i class="fas fa-edit me-1"></i>
                                         </button>

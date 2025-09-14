@@ -72,6 +72,7 @@
                                 <th>الحالة</th>
                                 <th>تاريخ الإغلاق</th>
                                 <th>تاريخ التقديم</th>
+                                <th>الرد</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,6 +88,7 @@
                                     </td>
                                     <td>{{ $complaint->closed_at ? $complaint->closed_at->format('Y/m/d') : '-' }}</td>
                                     <td>{{ $complaint->created_at->format('Y/m/d') }}</td>
+                                    <td>{{ $complaint->response ? $complaint->response : '-' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
