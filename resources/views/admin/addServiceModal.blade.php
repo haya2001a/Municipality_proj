@@ -64,20 +64,6 @@
                                     <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            <div class="flex-fill d-flex flex-column">
-                                <label class="form-label">الأولوية</label>
-                                <select name="priority"
-                                    class="form-select bg-light h-100 @error('priority') is-invalid @enderror" required>
-                                    <option value="" hidden>اختر الأولوية</option>
-                                    <option value="غير عاجل">غير عاجل</option>
-                                    <option value="متوسط">متوسط</option>
-                                    <option value="عاجل">عاجل</option>
-                                </select>
-                                @error('priority')
-                                    <div class="text-danger small mt-1">{{ $message }}</div>
-                                @enderror
-                            </div>
                         </div>
 
                         <div class="col-12">

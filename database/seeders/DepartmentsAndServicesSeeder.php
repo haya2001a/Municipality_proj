@@ -134,7 +134,6 @@ class DepartmentsAndServicesSeeder extends Seeder
                 'required_documents' => json_encode($srv['required_documents']),
                 'notes' => $srv['notes'],
                 'status' => 'فعّالة',
-                'priority' => 'متوسط',
             ]);
         }
 
@@ -197,7 +196,6 @@ class DepartmentsAndServicesSeeder extends Seeder
                 'required_documents' => json_encode($srv['required_documents']),
                 'notes' => $srv['notes'],
                 'status' => 'فعّالة',
-                'priority' => 'متوسط',
             ]);
         }
     }

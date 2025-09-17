@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Service extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'department_id', 'description', 'price', 'processing_time', 'required_documents', 'terms_conditions', 'notes', 'status','priority'];
+    protected $fillable = ['name', 'department_id', 'description', 'price', 'processing_time', 'required_documents', 'terms_conditions', 'notes', 'status'];
 
     public static function rules()
     {
@@ -22,7 +22,6 @@ class Service extends Model
             'terms_conditions' => 'nullable|string',
             'notes' => 'nullable|string',
             'status' => 'required|in:فعّالة,غير فعّالة',
-            'priority' => 'required|in:غير عاجل,متوسط,عاجل',
         ];
     }
 

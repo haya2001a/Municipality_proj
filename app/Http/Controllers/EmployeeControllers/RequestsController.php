@@ -113,7 +113,7 @@ class RequestsController extends Controller
         $requestModel->user_id = auth()->id();
         $requestModel->service_id = $service->id;
         $requestModel->department_id = $service->department_id;
-        $requestModel->priority = $service->priority ?? 'غير عاجل';
+        $requestModel->priority = $request->priority ?? 'غير عاجل';
         $requestModel->price = $service->price ?? null;
         $requestModel->status = 'بانتظار الموافقة';
         $requestModel->save();

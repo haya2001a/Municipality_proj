@@ -50,11 +50,6 @@
                                     <span class="text-sm text-gray-500">⏳ مدة المعالجة:</span>
                                     <span class="px-2 py-1  text-gray-500 text-xs font-medium rounded-full">{{ $service->processing_time }} يوم</span>
                                 </div>
-                                
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm text-gray-500">⭐ الأولوية:</span>
-                                    <span class="px-2 py-1  text-gray-500 text-xs font-medium rounded-full">{{ $service->priority }}</span>
-                                </div>
 
                                 <div class="flex items-center justify-between">
                                     <span class="text-sm text-gray-500">📌 الحالة:</span>

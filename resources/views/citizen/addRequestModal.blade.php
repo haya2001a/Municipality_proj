@@ -22,10 +22,24 @@
                         <input type="text" id="serviceName" class="form-control bg-light" readonly>
                     </div>
 
+                    <div class="flex-fill d-flex flex-column mb-3">
+                        <label class="form-label">الأولوية</label>
+                        <select name="priority"
+                            class="form-select bg-light h-100 @error('priority') is-invalid @enderror" required>
+                            <option value="" hidden>اختر الأولوية</option>
+                            <option value="غير عاجل">غير عاجل</option>
+                            <option value="متوسط">متوسط</option>
+                            <option value="عاجل">عاجل</option>
+                        </select>
+                        @error('priority')
+                            <div class="text-danger small mt-1">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     {{-- display required document --}}
                     <div id="requiredDocsArea" class="mb-3"></div>
 
-                 
+
                     <div id="fileUploadArea" class="mb-3">
                         <input type="file" name="documents[]" id="serviceFiles" multiple>
                     </div>
@@ -81,7 +95,7 @@
 
             document.getElementById('requiredDocsArea').innerHTML = docsHtml;
 
-            pond.removeFiles(); 
+            pond.removeFiles();
             modal.show();
         });
     });

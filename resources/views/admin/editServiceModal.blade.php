@@ -14,7 +14,7 @@
                             <input type="text" name="name" id="editServiceName" class="form-control" required>
                         </div>
 
-                        <div class="col-6">
+                        {{-- <div class="col-6">
                             <label for="priority">الأولوية</label>
                             <select name="priority" id="priority" class="form-select" required>
                                 <option value="" selected hidden>اختر الأولوية</option>
@@ -25,7 +25,7 @@
                             @error('priority')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
                         
                         <div class="col-6">
                             <label class="form-label fw-semibold">السعر</label>

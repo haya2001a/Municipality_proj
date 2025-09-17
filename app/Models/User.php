@@ -65,4 +65,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Complaint::class, 'user_id');
     }
+
+    public function sendPasswordResetNotification($token)
+{
+    $url = url(route('password.reset', ['token' => $token, 'email' => $this->email], false));
+    \Mail::to($this->email)->send(new \App\Mail\ResetPasswordMail($url, $this));
+}
+
 }

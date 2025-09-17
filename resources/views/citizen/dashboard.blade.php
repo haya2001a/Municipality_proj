@@ -15,7 +15,7 @@
             @php
                 $cards = [];
                 $cards[] = [
-                    'title' => 'خدماتي',
+                    'title' => 'طلباتي',
                     'icon' => 'fas fa-cogs',
                     'link' => route('citizen.requests.index'),
                     'color' => 'primary',

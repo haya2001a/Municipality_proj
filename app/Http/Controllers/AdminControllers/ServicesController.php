@@ -15,7 +15,6 @@ class ServicesController extends Controller
         $departmentFilter = $request->input('department');
         $nameFilter = $request->input('name');
         $statusFilter = $request->input('status');
-        $priorityFilter = $request->input('priority');
 
         $services = Service::query();
 
@@ -28,10 +27,6 @@ class ServicesController extends Controller
         }
         if ($statusFilter) { 
             $services->where('status', $statusFilter);
-        }
-
-        if ($priorityFilter) {
-            $services->where('priority', $priorityFilter);
         }
 
         $services = $services->latest()->paginate(10);

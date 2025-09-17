@@ -30,7 +30,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         $user = $request->user();
 
-        // إعادة توجيه حسب الدور
         if ($user->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
         } elseif ($user->hasRole('employee')) {
@@ -38,9 +37,6 @@ class AuthenticatedSessionController extends Controller
         } elseif ($user->hasRole('citizen')) {
             return redirect()->route('citizen.dashboard');
         }
-
-        // fallback
-        return redirect(RouteServiceProvider::HOME);
     }
 
     /**

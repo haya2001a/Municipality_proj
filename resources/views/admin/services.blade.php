@@ -53,20 +53,6 @@
                         </select>
                     </form>
 
-                    <form method="GET" action="{{ route('admin.services.index') }}" id="priorityFilterForm"
-                        class="d-flex align-items-center gap-2 mb-0">
-                        <label for="priorityFilter" class="fw-semibold mb-0">الأولوية:</label>
-                        <select name="priority" id="priorityFilter" class="form-select form-select-sm rounded-pill">
-                            <option value="">الكل</option>
-                            @foreach (['غير عاجل', 'متوسط', 'عاجل'] as $priority)
-                                <option value="{{ $priority }}"
-                                    {{ request('priority') == $priority ? 'selected' : '' }}>
-                                    {{ $priority }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </form>
-
                     <form method="GET" action="{{ route('admin.services.index') }}" id="nameFilterForm"
                         class="d-flex align-items-center gap-2 mb-0">
                         <label for="nameFilter" class="fw-semibold mb-0">الخدمة:</label>
@@ -86,7 +72,6 @@
                                 <th>السعر</th>
                                 <th>المدة (دقيقة)</th>
                                 <th>الحالة</th>
-                                <th>الأولوية</th>
                                 <th class="text-center">العمليات</th>
                             </tr>
                         </thead>
@@ -104,7 +89,6 @@
                                         @endif
                                     </td>
                                     <td>{{ $service->status }}</td>
-                                    <td>{{ $service->priority }}</td>
                                     <td class="text-center">
                                         <button class="btn btn-sm btn-outline-primary editServiceBtn"
                                             data-id="{{ $service->id }}" title="تعديل">
@@ -177,9 +161,6 @@
         });
         $('#departmentFilter').on('change', function() {
             $('#departmentFilterForm').submit();
-        });
-        $('#priorityFilter').on('change', function() {
-            $('#priorityFilterForm').submit();
         });
     </script>
 
